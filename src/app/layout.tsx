@@ -17,9 +17,14 @@ export const metadata: Metadata = {
   description: "Frontend Engineer",
 };
 
+const localeScript = `(function(){try{var l=localStorage.getItem('locale');if(l!=='en'&&l!=='ru'){l=navigator.language.startsWith('ru')?'ru':'en'}document.documentElement.setAttribute('data-locale',l)}catch(e){}})()`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={ibmPlexSans.variable}>
+    <html lang="en" className={ibmPlexSans.variable} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: localeScript }} />
+      </head>
       <body>
         <LocaleProvider>
           <div className="body">

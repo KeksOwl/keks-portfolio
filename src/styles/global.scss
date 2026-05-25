@@ -41,6 +41,10 @@ main {
   grid-template-rows: min-content 1fr min-content;
 }
 
+html[data-locale="ru"]:not([data-hydrated]) .body {
+  visibility: hidden;
+}
+
 a,
 button {
   margin: 0;

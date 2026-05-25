@@ -4,7 +4,6 @@
 "use client";
 
 import { createContext, useContext, useEffect, useCallback, useSyncExternalStore, type ReactNode } from "react";
-import styles from "./locale-provider.module.scss";
 
 export type Locale = "en" | "ru";
 
@@ -50,6 +49,7 @@ function initLocale() {
     currentLocale = "ru";
   }
   subscribers.forEach(cb => cb());
+  document.documentElement.setAttribute("data-hydrated", "");
 }
 
 function updateLocale(newLocale: Locale) {
@@ -58,11 +58,6 @@ function updateLocale(newLocale: Locale) {
   subscribers.forEach(cb => cb());
 }
 
-// --- Hydration flag ---
-const noop = () => () => {};
-const getHydrated = () => true;
-const getServerHydrated = () => false;
-
 // --- Provider ---
 interface LocaleProviderProps {
   children: ReactNode;
@@ -70,7 +65,6 @@ interface LocaleProviderProps {
 
 export default function LocaleProvider({ children }: LocaleProviderProps) {
   const locale = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
-  const hydrated = useSyncExternalStore(noop, getHydrated, getServerHydrated);
 
   useEffect(() => { initLocale(); }, []);
 
@@ -78,13 +72,9 @@ export default function LocaleProvider({ children }: LocaleProviderProps) {
     updateLocale(newLocale);
   }, []);
 
-  const visible = hydrated && initialized;
-
   return (
     <LocaleContext.Provider value={{ locale, setLocale }}>
-      <div className={`${styles.wrapper} ${visible ? styles.ready : ""}`}>
-        {children}
-      </div>
+      {children}
     </LocaleContext.Provider>
   );
 }
