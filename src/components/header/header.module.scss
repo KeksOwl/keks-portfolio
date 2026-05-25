@@ -1,0 +1,81 @@
+.header {
+  box-sizing: border-box;
+  padding: $page-gutter;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: $color-bg-elevated;
+  border-bottom: 1px solid $color-border-subtle;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+
+  @media (max-width: $vp-mobile) {
+    padding: $page-gutter-mobile;
+  }
+}
+
+.logo {
+  box-sizing: border-box;
+  padding-left: 14px;
+  font-size: 16px;
+  font-weight: 500;
+  color: $color-fg;
+  position: relative;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  gap: 10px;
+
+  &::before {
+    position: absolute;
+    content: "";
+    width: 7px;
+    height: 7px;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: $color-accent;
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px $color-accent-glow;
+  }
+
+  &:hover {
+    .spec {
+      color: $color-fg;
+    }
+  }
+}
+
+.spec {
+  font-size: 12px;
+  color: $color-fg-faint;
+  text-transform: uppercase;
+  position: relative;
+  box-sizing: border-box;
+  padding-left: 10px;
+  transition: $trans-3;
+  letter-spacing: $text-spacing-5;
+
+  &::before {
+    position: absolute;
+    content: "/";
+    width: 1px;
+    height: 1px;
+    left: 0;
+    top: 0;
+  }
+}
+
+.langSwitch {
+  font-size: 14px;
+  text-transform: uppercase;
+  color: $color-fg-faint;
+  letter-spacing: $text-spacing-5;
+
+  &:hover {
+    color: $color-fg;
+  }
+}

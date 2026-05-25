@@ -1,0 +1,63 @@
+// Colors
+$color-bg: #0e0c0a;
+$color-fg: #ededed;
+$color-bg-elevated: #111111;
+$color-border-subtle: #1b1917;
+$color-accent: #e1ac6e;
+$color-accent-glow: rgba(225, 172, 110, 0.149);
+$color-fg-faint: #545454;
+$color-available: #75b68c;
+$color-available-ring: rgba(117, 182, 140, 0.5);
+$color-unavailable: #b67575;
+$color-unavailable-ring: rgba(182, 117, 117, 0.5);
+$color-fg-secondary: #767676;
+$color-fg-muted: #a7a4a1;
+
+$color-border: #252220;
+$color-accent-muted: #8c6a43;
+$color-selection-bg: rgba(92, 66, 33, 0.55);
+
+// Gradient
+
+// Layout
+$page-gutter: 25px 100px;
+$page-gutter-mobile: 15px;
+$text-spacing-5: 0.5;
+
+// Viewport
+$vp-desktop-only: 1024px;
+$vp-tablet: 1023px;
+$vp-mobile: 767px;
+$vp-1440: 1440px;
+$vp-550: 550px;
+
+// Other
+$trans-3: 0.3s;
+$fz-default: 18px;
+
+// Animations
+@keyframes ping {
+  0% {
+    box-shadow: 0 0 0 0 var(--ping-color);
+    opacity: 1;
+  }
+  100% {
+    box-shadow: 0 0 0 5px var(--ping-color);
+    opacity: 0;
+  }
+}
+
+// Mixins
+@mixin page-gutter {
+  padding-inline: $page-gutter;
+  @media (max-width: 640px) { padding-inline: $page-gutter-sm; }
+}
+
+// Functions
+@function size($size-in-px) {
+  @return $size-in-px / $fz-default * 1rem;
+}
+
+@function size-html($vp: $vp-1440, $k: 1) {
+  @return $fz-default / $vp * 100vw * $k;
+}

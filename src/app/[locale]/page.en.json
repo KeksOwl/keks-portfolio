@@ -1,0 +1,12 @@
+{
+  "header": "KeksOwl's personal website",
+  "hero": {
+    "available": "Open to a lot of things!",
+    "notAvailable": "Not looking for work at the moment.",
+    "title": "Frontend Engineer - KeksOwl",
+    "heading": "Frontend Engineer focused on interactive UI, product thinking and engineering quality.",
+    "mainText": "I work on complex product interfaces where frontend is not just presentation, but part of the product itself — interaction design, responsiveness, accessibility, usability and the long tail of details that shape how software feels in everyday use.",
+    "mainTextSecond": "Most of my work lives somewhere between engineering, UX and product thinking: building interactive tooling, refining workflows, improving interface clarity and creating interfaces that feel reliable, responsive and intuitive over time.",
+    "subText": "Currently working with TypeScript, React and modern frontend tooling on complex interactive surfaces at Songsterr."
+  }
+}
