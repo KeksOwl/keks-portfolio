@@ -43,6 +43,11 @@ main {
 
 a,
 button {
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  outline: none;
   text-decoration: none;
   transition: $trans-3;
   -webkit-tap-highlight-color: transparent;

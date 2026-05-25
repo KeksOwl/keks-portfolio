@@ -51,7 +51,7 @@
 
 .spec {
   font-size: 12px;
-  color: $color-fg-faint;
+  color: $color-fg-secondary;
   text-transform: uppercase;
   position: relative;
   box-sizing: border-box;
@@ -62,20 +62,8 @@
   &::before {
     position: absolute;
     content: "/";
-    width: 1px;
-    height: 1px;
     left: 0;
-    top: 0;
-  }
-}
-
-.langSwitch {
-  font-size: 14px;
-  text-transform: uppercase;
-  color: $color-fg-faint;
-  letter-spacing: $text-spacing-5;
-
-  &:hover {
-    color: $color-fg;
+    top: 50%;
+    transform: translateY(-50%);
   }
 }

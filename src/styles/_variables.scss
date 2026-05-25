@@ -1,21 +1,21 @@
 // Colors
+//// Background
 $color-bg: #0e0c0a;
-$color-fg: #ededed;
 $color-bg-elevated: #111111;
-$color-border-subtle: #1b1917;
+//// Foreground
+$color-fg: #ededed;
+$color-fg-muted: #a7a4a1;
+$color-fg-secondary: #767676;
 $color-accent: #e1ac6e;
 $color-accent-glow: rgba(225, 172, 110, 0.149);
-$color-fg-faint: #545454;
 $color-available: #75b68c;
 $color-available-ring: rgba(117, 182, 140, 0.5);
 $color-unavailable: #b67575;
 $color-unavailable-ring: rgba(182, 117, 117, 0.5);
-$color-fg-secondary: #767676;
-$color-fg-muted: #a7a4a1;
+//// Borders
+$color-border-subtle: #1b1917;
 
-$color-border: #252220;
 $color-accent-muted: #8c6a43;
-$color-selection-bg: rgba(92, 66, 33, 0.55);
 
 // Gradient
 

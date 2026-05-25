@@ -1,24 +1,27 @@
+"use client";
+
 import Link from "next/link";
-import type { Locale } from "@/app/[locale]/layout";
+import { useLocale } from "@/components/locale-provider/locale-provider";
 import LangSwitcher from "@/components/lang-switcher/lang-switcher";
 import styles from "./header.module.scss";
+import en from "./header.en.json";
+import ru from "./header.ru.json";
 
-interface HeaderProps {
-  locale: Locale;
-}
+const dicts = { en, ru };
 
-export default async function Header({ locale }: HeaderProps) {
-  const dict = (await import(`./${`header.${locale}.json`}`)).default;
+export default function Header() {
+  const { locale } = useLocale();
+  const dict = dicts[locale];
 
   return (
     <header className={styles.header}>
-        <Link href={`/${locale}`} className={styles.logo}>
-          KeksOwl
-          <span className={styles.spec}>
-            {dict.spec}
-          </span>
-        </Link>
-        <LangSwitcher className={styles.langSwitch} locale={locale} label={dict.langSwitch} />
+      <Link href="/" className={styles.logo}>
+        KeksOwl
+        <span className={styles.spec}>
+          {dict.spec}
+        </span>
+      </Link>
+      <LangSwitcher />
     </header>
   );
 }

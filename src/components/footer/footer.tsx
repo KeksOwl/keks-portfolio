@@ -1,30 +1,21 @@
-import type { Locale } from "@/app/[locale]/layout";
+"use client";
+
+import { useLocale } from "@/components/locale-provider/locale-provider";
 import styles from "./footer.module.scss";
+import en from "./footer.en.json";
+import ru from "./footer.ru.json";
 
-interface FooterProps {
-  locale: Locale;
-}
+const dicts = { en, ru };
 
-export default async function Footer({ locale }: FooterProps) {
-  const dict = (await import(`./${`footer.${locale}.json`}`)).default;
+const contactsList = [
+  { id: "email", link: "mailto:info@keksowl.com", text: "info@keksowl.com" },
+  { id: "github", link: "https://github.com/keksowl", text: "github" },
+  { id: "telegram", link: "https://t.me/keksowl", text: "Telegram" },
+];
 
-  const contactsList = [
-    {
-      id: "email",
-      link: "mailto:info@keksowl.com",
-      text: "info@keksowl.com"
-    },
-    {
-      id: "github",
-      link: "https://github.com/keksowl",
-      text: "github"
-    },
-    {
-      id: "telegram",
-      link: "https://t.me/keksowl",
-      text: "Telegram"
-    }
-  ]
+export default function Footer() {
+  const { locale } = useLocale();
+  const dict = dicts[locale];
 
   return (
     <footer className={styles.footer}>

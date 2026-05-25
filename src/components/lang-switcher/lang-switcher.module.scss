@@ -1,0 +1,35 @@
+.switcher {
+  display: inline-flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  gap: 15px;
+  font-size: 14px;
+  letter-spacing: $text-spacing-5;
+  text-transform: uppercase;
+  color: $color-fg-secondary;
+
+  position: relative;
+
+  &::before {
+    position: absolute;
+    content: "/";
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.active {
+  font-weight: 700;
+  color: $color-fg;
+}
+
+.btn {
+  color: $color-fg-secondary;
+  transition: $trans-3;
+  cursor: pointer;
+
+  &:hover {
+    color: $color-fg;
+  }
+}

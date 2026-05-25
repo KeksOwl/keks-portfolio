@@ -1,23 +1,23 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import type { Locale } from "@/app/[locale]/layout";
+import { useLocale } from "@/components/locale-provider/locale-provider";
+import styles from "./lang-switcher.module.scss";
 
-interface LangSwitcherProps {
-  className: string,
-  locale: Locale,
-  label: string
-}
-
-export default function LangSwitcher({ className, locale, label }: LangSwitcherProps) {
-  const pathname = usePathname();
-  const targetLocale: Locale = locale === "en" ? "ru" : "en";
-  const targetPath = pathname.replace(/^\/(en|ru)/, `/${targetLocale}`);
+export default function LangSwitcher() {
+  const { locale, setLocale } = useLocale();
 
   return (
-    <Link className={className} href={targetPath} lang={targetLocale}>
-      {label}
-    </Link>
+    <div className={styles.switcher}>
+      {locale === "en" ? (
+        <span className={styles.active}>EN</span>
+      ) : (
+        <button className={styles.btn} onClick={() => setLocale("en")}>EN</button>
+      )}
+      {locale === "ru" ? (
+        <span className={styles.active}>RU</span>
+      ) : (
+        <button className={styles.btn} onClick={() => setLocale("ru")}>RU</button>
+      )}
+    </div>
   );
 }
