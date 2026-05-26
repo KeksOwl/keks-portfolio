@@ -15,14 +15,15 @@ $color-unavailable-ring: rgba(182, 117, 117, 0.5);
 //// Borders
 $color-border-subtle: #1b1917;
 
-$color-accent-muted: #8c6a43;
-
 // Gradient
 
 // Layout
-$page-gutter: 25px 100px;
+$page-spacer: 25px;
+$page-gutter: $page-spacer 100px;
 $page-gutter-mobile: 15px;
 $text-spacing-5: 0.5;
+$home-padding: 35px 0;
+$home-padding-mob: 20px 0;
 
 // Viewport
 $vp-desktop-only: 1024px;

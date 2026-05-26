@@ -14,6 +14,8 @@ const heroList = [
   { id: "telegram", link: "https://t.me/keksowl", text: "Telegram" },
 ];
 
+const aboutList = ["composition", "product", "craft", "ownership"] as const;
+
 export default function HomePage() {
   const { locale } = useLocale();
   const dict = dicts[locale];
@@ -23,7 +25,7 @@ export default function HomePage() {
     <>
       <h1 className="visually-hidden">{dict.header}</h1>
 
-      <section className={styles.hero}>
+      <section className="container">
         <h2 className="visually-hidden">{dict.hero.title}</h2>
         <p className={`${styles.heroSupText} ${isOpen ? "" : styles.heroSupTextNegative}`}>
           {isOpen ? dict.hero.available : dict.hero.notAvailable}
@@ -43,6 +45,25 @@ export default function HomePage() {
                 {heroItem.text}
                 <ArrowUpRight size={14} />
               </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <hr/>
+
+      <section className="container section">
+        <h2 className="section-title">{dict.about.title}</h2>
+        <p className={styles.aboutText}>
+          {dict.about.mainText.split("{role}")[0]}<strong>{dict.about.mainTextRole}</strong>{dict.about.mainText.split("{role}")[1]}<br/><br/>
+          {dict.about.mainTextSecond}<br/><br/>
+          {dict.about.mainTextThird}
+        </p>
+        <ul className={styles.aboutList}>
+          {aboutList.map(id => (
+            <li className={styles.aboutItem} key={id}>
+              <h3 className={styles.aboutItemTitle}>{dict.about[id].title}</h3>
+              <p className={styles.aboutItemText}>{dict.about[id].text}</p>
             </li>
           ))}
         </ul>

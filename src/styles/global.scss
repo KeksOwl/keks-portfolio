@@ -27,14 +27,6 @@ body {
   }
 }
 
-main {
-  padding: $page-gutter;
-
-  @media (max-width: $vp-mobile) {
-    padding: $page-gutter-mobile;
-  }
-}
-
 .body {
   height: 100vh;
   display: grid;
@@ -43,6 +35,14 @@ main {
 
 html[data-locale="ru"]:not([data-hydrated]) .body {
   visibility: hidden;
+}
+
+main {
+  padding: $page-gutter;
+
+  @media (max-width: $vp-mobile) {
+    padding: $page-gutter-mobile;
+  }
 }
 
 a,
@@ -81,4 +81,56 @@ ul {
   clip-path: inset(100%);
   clip: rect(0 0 0 0);
   overflow: hidden;
+}
+
+// Components
+.container {
+  box-sizing: border-box;
+  padding: $home-padding;
+  margin: 0 auto;
+  width: 60%;
+
+  @media (max-width: $vp-tablet) {
+    width: 80%;
+  }
+
+  @media (max-width: $vp-550) {
+    width: 100%;
+    padding: $home-padding-mob;
+  }
+}
+
+.section {
+  position: relative;
+}
+
+hr {
+  visibility: hidden;
+  margin: $page-gutter;
+  position: relative;
+
+  @media (max-width: $vp-mobile) {
+    margin: $page-gutter-mobile;
+  }
+
+  &::before {
+    visibility: visible;
+    position: absolute;
+    content: "";
+    width: 100vw;
+    height: 2px;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: $color-border-subtle;
+  }
+}
+
+.section-title {
+  margin: 0;
+  padding: 0;
+  text-transform: uppercase;
+  font-size: 20px;
+  letter-spacing: $text-spacing-5;
+  color: $color-fg;
 }

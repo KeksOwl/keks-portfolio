@@ -8,5 +8,28 @@
     "mainText": "I work on complex product interfaces where frontend is not just presentation, but part of the product itself — interaction design, responsiveness, accessibility, usability and the long tail of details that shape how software feels in everyday use.",
     "mainTextSecond": "Most of my work lives somewhere between engineering, UX and product thinking: building interactive tooling, refining workflows, improving interface clarity and creating interfaces that feel reliable, responsive and intuitive over time.",
     "subText": "Currently working with TypeScript, React and modern frontend tooling on complex interactive surfaces at Songsterr."
+  },
+  "about": {
+    "title": "About",
+    "mainTextRole": "frontend engineer",
+    "mainText": "I'm a {role} who treats UI as a system, not a set of screens. I think about how components scale, how state flows, how an interface holds up when the network drops or a screen reader takes over. The kind of work where engineering decisions shape what the user feels — even if they never notice.",
+    "mainTextSecond": "I work well in teams that blur the line between design and engineering — where both sides care about the result, not just the handoff. Whether it's two people or twenty, what matters to me is honest code review, async-first communication, and enough documentation that decisions don't get lost between sprints.",
+    "mainTextThird": "Outside of work I run tabletop RPG campaigns, build FoundryVTT modules, and translate video games and rulebooks from English to Russian. Turns out localization is just frontend with higher stakes: one wrong word and your paladin starts a diplomatic incident.",
+    "composition": {
+      "title": "Composition",
+      "text": "Components that work together, not just in isolation. How state flows between modules matters more than how any single one looks inside."
+    },
+    "product": {
+      "title": "Product thinking",
+      "text": "The best frontend work starts before the ticket. Understanding why something exists shapes how it should feel."
+    },
+    "craft": {
+      "title": "Craftsmanship",
+      "text": "Details compound. Tooltip timing, focus order, empty states, loading sequences — the sum of small decisions is what users call 'polish'."
+    },
+    "ownership": {
+      "title": "Ownership",
+      "text": "If I shipped it, I see it through. From first deploy to steady state — that's when the interesting edge cases surface."
+    }
   }
 }
