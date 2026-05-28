@@ -7,6 +7,8 @@ import ru from "./footer.ru.json";
 
 const dicts = { en, ru };
 
+const SITE_YEAR = 2026;
+
 const contactsList = [
   { id: "email", link: "mailto:info@keksowl.com", text: "info@keksowl.com" },
   { id: "github", link: "https://github.com/keksowl", text: "github" },
@@ -21,11 +23,11 @@ export default function Footer() {
     <footer className={styles.footer}>
       <section className={styles.copyright}>
         <h2 className="visually-hidden">{dict.copyright.title}</h2>
-        <p className={styles.copyrightText}>© &#8226; 2026 &#8226; KeksOwl</p>
+        <p className={styles.copyrightText}>© <span className={styles.dot}>&#8226;</span> {SITE_YEAR} <span className={styles.dot}>&#8226;</span> KeksOwl</p>
       </section>
       <section className={styles.contacts}>
         <h2 className="visually-hidden">{dict.contacts.title}</h2>
-        <ul className={styles.contactsList}>
+        <ul className={styles.contactsList} data-paw-target>
           {contactsList.map(contactsItem => (
             <li className={styles.contactsItem} key={contactsItem.id}>
               <a href={contactsItem.link} className={styles.contactsLink} rel="noopener" target="_blank">

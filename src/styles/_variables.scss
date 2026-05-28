@@ -39,11 +39,11 @@ $fz-default: 18px;
 // Animations
 @keyframes ping {
   0% {
-    box-shadow: 0 0 0 0 var(--ping-color);
-    opacity: 1;
+    transform: translateY(-50%) scale(1);
+    opacity: 0.8;
   }
   100% {
-    box-shadow: 0 0 0 5px var(--ping-color);
+    transform: translateY(-50%) scale(2.8);
     opacity: 0;
   }
 }

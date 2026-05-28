@@ -1,0 +1,28 @@
+.paw {
+  position: fixed;
+  z-index: 9998;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+  will-change: transform, opacity;
+}
+
+.swat {
+  opacity: 1;
+  animation: swatMotion 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes swatMotion {
+  0% {
+    scale: 0.5;
+    translate: 0 30px;
+  }
+  50% {
+    scale: 1.1;
+    translate: 0 -5px;
+  }
+  100% {
+    scale: 1;
+    translate: 0 0;
+  }
+}

@@ -25,6 +25,8 @@
   }
 
   &::after {
+    background-color: $color-available;
+    will-change: transform, opacity;
     animation: ping 2.4s ease-out infinite;
   }
 }
@@ -33,6 +35,10 @@
   --ping-color: #{$color-unavailable-ring};
 
   &::before {
+    background-color: $color-unavailable;
+  }
+
+  &::after {
     background-color: $color-unavailable;
   }
 }
@@ -63,6 +69,7 @@
   flex-flow: row nowrap;
   align-items: center;
   gap: 40px;
+  width: max-content;
 }
 
 .heroItem:first-child .heroLink::before {

@@ -7,7 +7,7 @@ export default function LangSwitcher() {
   const { locale, setLocale } = useLocale();
 
   return (
-    <div className={styles.switcher}>
+    <div className={styles.switcher} data-paw-target>
       {locale === "en" ? (
         <span className={styles.active}>EN</span>
       ) : (

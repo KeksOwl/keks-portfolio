@@ -25,6 +25,11 @@
   text-transform: uppercase;
 }
 
+.dot {
+  margin: 0 4px;
+  opacity: 0.5;
+}
+
 .contactsList {
   display: flex;
   flex-flow: row nowrap;

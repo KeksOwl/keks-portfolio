@@ -22,12 +22,16 @@
 .active {
   font-weight: 700;
   color: $color-fg;
+  padding: 8px;
+  margin: -8px;
 }
 
 .btn {
   color: $color-fg-secondary;
   transition: $trans-3;
   cursor: pointer;
+  padding: 8px;
+  margin: -8px;
 
   &:hover {
     color: $color-fg;

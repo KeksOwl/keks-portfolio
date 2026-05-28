@@ -12,9 +12,9 @@
   "about": {
     "title": "About",
     "mainTextRole": "frontend engineer",
-    "mainText": "I'm a {role} who treats UI as a system, not a set of screens. I think about how components scale, how state flows, how an interface holds up when the network drops or a screen reader takes over. The kind of work where engineering decisions shape what the user feels — even if they never notice.",
+    "mainText": "Hi! I'm Semyon Ulankov, a {role} who treats UI as a system, not a set of screens. I think about how components scale, how state flows, how an interface holds up when the network drops or a screen reader takes over. The kind of work where engineering decisions shape what the user feels — even if they never notice.",
     "mainTextSecond": "I work well in teams that blur the line between design and engineering — where both sides care about the result, not just the handoff. Whether it's two people or twenty, what matters to me is honest code review, async-first communication, and enough documentation that decisions don't get lost between sprints.",
-    "mainTextThird": "Outside of work I run tabletop RPG campaigns, build FoundryVTT modules, and translate video games and rulebooks from English to Russian. Turns out localization is just frontend with higher stakes: one wrong word and your paladin starts a diplomatic incident.",
+    "mainTextThird": "Outside of work I run tabletop RPG campaigns, build FoundryVTT modules, and translate video games and rulebooks from English to Russian. Turns out localization is just frontend with higher stakes: one wrong word and your bard starts a diplomatic incident.",
     "composition": {
       "title": "Composition",
       "text": "Components that work together, not just in isolation. How state flows between modules matters more than how any single one looks inside."

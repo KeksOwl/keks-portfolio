@@ -1,0 +1,47 @@
+# KeksOwl — Semyon Ulankov
+
+> Frontend Engineer focused on interactive UI, product thinking and engineering quality.
+
+## About
+
+I'm Semyon Ulankov, a frontend engineer who treats UI as a system, not a set of screens. I think about how components scale, how state flows, how an interface holds up when the network drops or a screen reader takes over. The kind of work where engineering decisions shape what the user feels — even if they never notice.
+
+I work well in teams that blur the line between design and engineering — where both sides care about the result, not just the handoff. Whether it's two people or twenty, what matters to me is honest code review, async-first communication, and enough documentation that decisions don't get lost between sprints.
+
+Outside of work I run tabletop RPG campaigns, build FoundryVTT modules, and translate video games and rulebooks from English to Russian.
+
+## Values
+
+- **Composition** — Components that work together, not just in isolation. How state flows between modules matters more than how any single one looks inside.
+- **Product thinking** — The best frontend work starts before the ticket. Understanding why something exists shapes how it should feel.
+- **Craftsmanship** — Details compound. Tooltip timing, focus order, empty states, loading sequences — the sum of small decisions is what users call "polish."
+- **Ownership** — If I shipped it, I see it through. From first deploy to steady state — that's when the interesting edge cases surface.
+
+## Current Work
+
+Working with TypeScript, React and modern frontend tooling on complex interactive surfaces at Songsterr.
+
+## Tech Stack
+
+- TypeScript, React, Next.js
+- SCSS Modules, PostCSS
+- MDX for content
+- Static export deployed to GitHub Pages
+
+## Contact
+
+- Email: info@keksowl.com
+- GitHub: https://github.com/keksowl
+- Telegram: https://t.me/keksowl
+
+## Blog Topics
+
+- Feedback loops for AI coding agents
+- Localizing into 11 languages you can't read (AI translation verification)
+- Taste as an engineering skill in the age of code generation
+
+## Site
+
+- URL: https://keksowl.com
+- Source: https://github.com/keksowl/keks-portfolio
+- Bilingual: English (default, SEO) + Russian (client-side switching)

@@ -15,7 +15,7 @@ export default function Header() {
 
   return (
     <header className={styles.header}>
-      <Link href="/" className={styles.logo}>
+      <Link href="/" className={styles.logo} data-paw-target>
         KeksOwl
         <span className={styles.spec}>
           {dict.spec}
