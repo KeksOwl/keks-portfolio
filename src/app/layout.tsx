@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans } from "next/font/google";
 import LocaleProvider from "@/components/locale-provider/locale-provider";
-import { Header, Footer, CatPaw, DotGrid } from "@/components";
+import { Header, Footer } from "@/components";
+import Decorations from "@/components/decorations/decorations";
 import "../styles/normalize.css";
 import "../styles/global.scss";
 
@@ -48,8 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <main>{children}</main>
             <Footer />
           </div>
-          <DotGrid />
-          <CatPaw />
+          <Decorations />
         </LocaleProvider>
       </body>
     </html>
