@@ -81,14 +81,16 @@ export default function CornerCat() {
         />
 
         {/* Body */}
-        <ellipse
-          className={styles.body}
-          cx="32"
-          cy="44"
-          rx="18"
-          ry="13"
-          fill="#ededed"
-        />
+        <g className={styles.bodyWrap}>
+          <ellipse
+            className={styles.body}
+            cx="32"
+            cy="44"
+            rx="18"
+            ry="13"
+            fill="#ededed"
+          />
+        </g>
 
         {/* Head */}
         <g className={styles.head}>

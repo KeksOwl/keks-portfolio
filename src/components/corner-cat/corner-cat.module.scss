@@ -17,9 +17,14 @@
 
 // --- State: Sleep (default) ---
 
-.body {
+.bodyWrap {
   transform-origin: 32px 44px;
   animation: breathe 4s ease-in-out infinite;
+}
+
+.body {
+  transform-origin: 32px 44px;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .head {
@@ -101,9 +106,7 @@
   }
 
   .body {
-    animation: none;
     transform: scaleX(1.08) scaleY(0.94);
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   .whiskers {
@@ -130,10 +133,11 @@
 // --- Reduced motion ---
 
 @media (prefers-reduced-motion: reduce) {
-  .body {
+  .bodyWrap {
     animation: none;
   }
 
+  .body,
   .head,
   .tail,
   .eyesClosed,
