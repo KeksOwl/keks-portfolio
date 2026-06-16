@@ -1,7 +1,10 @@
 import { notFound } from "next/navigation";
 import { compileMDX } from "next-mdx-remote/rsc";
 import { getBlogPost, getBlogPosts } from "@/lib/mdx";
+import MdxLink from "@/components/mdx-link/mdx-link";
 import BlogPostView from "./blog-post-view";
+
+const mdxComponents = { a: MdxLink };
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -25,10 +28,11 @@ export default async function BlogPostPage({ params }: PageProps) {
   const { content: enContent } = await compileMDX({
     source: enPost.content,
     options: { parseFrontmatter: false },
+    components: mdxComponents,
   });
 
   const ruContent = ruPost
-    ? (await compileMDX({ source: ruPost.content, options: { parseFrontmatter: false } })).content
+    ? (await compileMDX({ source: ruPost.content, options: { parseFrontmatter: false }, components: mdxComponents })).content
     : enContent;
 
   return (
