@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useLocale } from "@/components/locale-provider/locale-provider";
 import LangSwitcher from "@/components/lang-switcher/lang-switcher";
+import NavigationProgress from "@/components/navigation-progress/navigation-progress";
 import styles from "./header.module.scss";
 import en from "./header.en.json";
 import ru from "./header.ru.json";
@@ -22,6 +23,7 @@ export default function Header() {
         </span>
       </Link>
       <LangSwitcher />
+      <NavigationProgress />
     </header>
   );
 }

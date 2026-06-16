@@ -48,6 +48,21 @@ $fz-default: 18px;
   }
 }
 
+@keyframes progress {
+  0% {
+    transform: scaleX(0);
+  }
+  10% {
+    transform: scaleX(0.3);
+  }
+  50% {
+    transform: scaleX(0.7);
+  }
+  100% {
+    transform: scaleX(0.95);
+  }
+}
+
 // Mixins
 @mixin page-gutter {
   padding-inline: $page-gutter;

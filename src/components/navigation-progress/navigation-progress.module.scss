@@ -1,0 +1,23 @@
+.bar {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  pointer-events: none;
+  background: $color-accent;
+  transform: scaleX(0);
+  transform-origin: left;
+  opacity: 0;
+}
+
+.active {
+  opacity: 1;
+  animation: progress 12s cubic-bezier(0.12, 0.6, 0.2, 1) forwards;
+}
+
+.done {
+  opacity: 0;
+  transform: scaleX(1);
+  transition: opacity 0.3s 0.1s;
+}
