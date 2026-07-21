@@ -9,11 +9,11 @@
   },
   "summary": {
     "title": "Summary",
-    "text": "Frontend engineer who cares about polished, thoughtful UI — the details, the CSS, the edge cases — and about the engineering underneath it: shared component architecture, refactoring, tooling and tests. Deep specialization in i18n infrastructure as an engineering problem rather than translation: typed pipelines, static analysis in CI, grammar-aware localization. Used to working as a self-directed engineer in an async, English-speaking product team — taking things from a fuzzy idea to production and steady state."
+    "text": "Frontend engineer who cares about polished, thoughtful UI — the details, the CSS, the edge cases — and about the engineering underneath it: shared component architecture, refactoring, tooling and tests. Deep specialization in i18n infrastructure as an engineering problem rather than translation: typed pipelines, static analysis in CI, grammar-aware localization. Used to working as a self-directed engineer in an async product team — taking things from a fuzzy idea to production and steady state."
   },
   "experience": {
     "title": "Experience",
-    "note": "Listed here are only the projects I still run today — there have been others along the way. Outside of client work I also build systems and modules for FoundryVTT, so far for my own tabletop campaigns and friends.",
+    "note": "Listed here are only the projects I still run today — there have been others along the way. Outside of client work I also build systems and modules for FoundryVTT (so far for my own tabletop campaigns and friends) and localize tabletop rulebooks, games and guides from English to Russian, communicating with their authors in English along the way.",
     "jobs": [
       {
         "id": "songsterr",
@@ -22,7 +22,7 @@
         "role": "Frontend Engineer",
         "period": "2025 — Present",
         "location": "Remote",
-        "description": "Popular guitar tablature service with a multi-million user audience. Product frontend across the whole surface — interactive UI, component architecture, experiments, tooling — plus deep ownership of the i18n platform, in an async English-speaking team.",
+        "description": "Popular guitar tablature service with a multi-million user audience. Product frontend across the whole surface — interactive UI, component architecture, experiments, tooling — plus deep ownership of the i18n platform, in an async remote team.",
         "bullets": [
           "Refactored the app's floating UI into a single useFloatingDropdown hook, replacing per-component portal boilerplate across selects, tuning editors and settings panels.",
           "Redesigned complex product UI: drum notation with responsive mobile layout and contextual help, the AI regeneration panel, refreshed toast notifications.",
