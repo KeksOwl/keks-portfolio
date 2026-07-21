@@ -136,3 +136,34 @@ hr {
   letter-spacing: $text-spacing-5;
   color: $color-fg;
 }
+
+// Print (used by /cv "Download PDF")
+@media print {
+  html {
+    font-size: 14px;
+  }
+
+  body {
+    background-color: #fff;
+    color: #111;
+
+    // Grain overlay
+    &::after {
+      display: none;
+    }
+  }
+
+  // Decorations (dot grid, cat paw, corner cat) rendered outside .body
+  body > *:not(.body) {
+    display: none;
+  }
+
+  .body > header,
+  .body > footer {
+    display: none;
+  }
+
+  main {
+    padding: 0;
+  }
+}

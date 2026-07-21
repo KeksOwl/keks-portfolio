@@ -1,0 +1,93 @@
+{
+  "header": {
+    "name": "Semyon Ulankov",
+    "headline": "Frontend Engineer — product UI, i18n infrastructure, developer tooling",
+    "meta": "Remote",
+    "available": "Open to a lot of things!",
+    "notAvailable": "Not looking for work at the moment.",
+    "downloadPdf": "Download PDF"
+  },
+  "summary": {
+    "title": "Summary",
+    "text": "Frontend engineer who cares about polished, thoughtful UI — the details, the CSS, the edge cases — and about the engineering underneath it: shared component architecture, refactoring, tooling and tests. Deep specialization in i18n infrastructure as an engineering problem rather than translation: typed pipelines, static analysis in CI, grammar-aware localization. Used to working as a self-directed engineer in an async, English-speaking product team — taking things from a fuzzy idea to production and steady state."
+  },
+  "experience": {
+    "title": "Experience",
+    "note": "Listed here are only the projects I still run today — there have been others along the way. Outside of client work I also build systems and modules for FoundryVTT, so far for my own tabletop campaigns and friends.",
+    "jobs": [
+      {
+        "id": "songsterr",
+        "company": "Songsterr",
+        "url": "https://www.songsterr.com",
+        "role": "Frontend Engineer",
+        "period": "2025 — Present",
+        "location": "Remote",
+        "description": "Popular guitar tablature service with a multi-million user audience. Product frontend across the whole surface — interactive UI, component architecture, experiments, tooling — plus deep ownership of the i18n platform, in an async English-speaking team.",
+        "bullets": [
+          "Refactored the app's floating UI into a single useFloatingDropdown hook, replacing per-component portal boilerplate across selects, tuning editors and settings panels.",
+          "Redesigned complex product UI: drum notation with responsive mobile layout and contextual help, the AI regeneration panel, refreshed toast notifications.",
+          "Own the frontend i18n platform: ten-plus languages across hundreds of components on a unified gettext/.po workflow with type-safe codegen and grammar-aware word order.",
+          "Designed and shipped a locale-import static analyzer with auto-fix, wired into the CI of multiple services — eliminating a class of \"silent English fallback\" bugs.",
+          "Led subsystem refactors: centralized notification localization across hundreds of files, moved locale resolution out of a Web Worker, split translations into lazy-loaded domains.",
+          "Ran product A/B experiments end-to-end — from experiment settings and UI to asset optimization (PNG → WebP → inline SVG) and analytics.",
+          "Delivered beyond the web app: Mocha test suites for domain logic, internal MCP server features (TypeScript service code with tests), iOS/Android user-testing support."
+        ],
+        "stack": "TypeScript · Preact · SSR · CSS Modules · Web Workers · gettext/.po · Mocha / Playwright"
+      },
+      {
+        "id": "topnevesta",
+        "company": "Top Nevesta",
+        "url": "https://topnevesta.com",
+        "role": "Full-stack Developer",
+        "period": "2022 — Present",
+        "location": "Remote",
+        "description": "Fashion and beauty center. Sole developer of the website, working directly with the business owners — from fuzzy requirements to production: migrated the site to Next.js 14 + TypeScript (App Router, static export) with galleries, SEO metadata and a full 301 migration of the old URL structure; integrated online booking, gift certificates and analytics. Keep evolving and maintaining it.",
+        "bullets": [],
+        "stack": "Next.js · TypeScript · React · SCSS · static export"
+      },
+      {
+        "id": "smartstat",
+        "company": "SmartStat",
+        "url": "https://smart-stat.ru",
+        "role": "Full-stack Developer",
+        "period": "2022 — Present",
+        "location": "Remote",
+        "description": "Manufacturer of electrochemical research equipment. Sole developer of the online catalog on WordPress + WooCommerce, working directly with the manufacturer: built the cart and checkout flow, keep improving catalog UX, set up a PostCSS pipeline and a Dockerized local environment.",
+        "bullets": [],
+        "stack": "WordPress · WooCommerce · PHP · PostCSS · Docker"
+      }
+    ]
+  },
+  "skills": {
+    "title": "Skills",
+    "groups": [
+      {
+        "title": "Core",
+        "items": ["TypeScript (strict)", "React / Preact", "Node.js (services, MCP)", "SSR", "Semantic HTML, accessibility", "CSS Modules / SCSS / LESS", "Tailwind / Bootstrap", "Design systems, component libraries", "Web Workers (Comlink)"]
+      },
+      {
+        "title": "Internationalization",
+        "items": ["i18n/l10n at scale", "gettext / .po workflow", "Type-safe translation codegen", "Grammar-aware localization", "Music-domain localization"]
+      },
+      {
+        "title": "Tooling & quality",
+        "items": ["Static analysis / auto-fix tooling", "CI standards enforcement", "Playwright / Mocha / Cypress", "Performance optimization (assets, bundle, rendering)", "LLM-assisted engineering: agent workflows, code verification"]
+      },
+      {
+        "title": "Product engineering",
+        "items": ["A/B experiments", "Mixpanel / Sentry", "MCP servers"]
+      }
+    ]
+  },
+  "languages": {
+    "title": "Languages",
+    "items": [
+      { "name": "Russian", "level": "native" },
+      { "name": "English", "level": "professional working proficiency" },
+      { "name": "Ukrainian", "level": "passive proficiency — understand, don't speak" },
+      { "name": "Belarusian", "level": "basic, partial understanding" },
+      { "name": "German", "level": "elementary" },
+      { "name": "Norwegian", "level": "elementary" }
+    ]
+  }
+}

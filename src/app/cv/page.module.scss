@@ -1,0 +1,467 @@
+.wrapper {
+  box-sizing: border-box;
+  width: 60%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: $home-padding;
+
+  @media (max-width: $vp-tablet) {
+    width: 80%;
+  }
+
+  @media (max-width: $vp-550) {
+    width: 100%;
+    padding: $home-padding-mob;
+  }
+}
+
+// Header
+
+.cvHeader {
+  margin-bottom: 40px;
+}
+
+.availability {
+  margin: 0 0 25px;
+  font-size: 12px;
+  color: $color-fg-secondary;
+  position: relative;
+  padding-left: 14px;
+  text-transform: uppercase;
+  letter-spacing: $text-spacing-5;
+
+  &::before,
+  &::after {
+    position: absolute;
+    content: "";
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+  }
+
+  &::before {
+    background-color: $color-available;
+  }
+
+  &::after {
+    background-color: $color-available;
+    will-change: transform, opacity;
+    animation: ping 2.4s ease-out infinite;
+  }
+}
+
+.availabilityNegative {
+  &::before,
+  &::after {
+    background-color: $color-unavailable;
+  }
+}
+
+.name {
+  margin: 0 0 8px;
+  padding: 0;
+  font-size: 32px;
+  color: $color-fg;
+
+  @media (max-width: $vp-550) {
+    font-size: 26px;
+  }
+}
+
+.headline {
+  margin: 0 0 12px;
+  padding: 0;
+  font-size: 18px;
+  color: $color-fg-muted;
+}
+
+.meta {
+  margin: 0 0 25px;
+  padding: 0;
+  font-size: 14px;
+  color: $color-fg-secondary;
+  letter-spacing: $text-spacing-5;
+}
+
+.headerRow {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  @media (max-width: $vp-550) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.contactList {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  gap: 40px;
+  width: max-content;
+
+  @media (max-width: $vp-mobile) {
+    gap: 35px;
+  }
+
+  @media (max-width: $vp-550) {
+    width: 100%;
+  }
+}
+
+.contactItem:first-child .contactLink::before {
+  display: none;
+}
+
+.contactLink {
+  font-size: 14px;
+  color: $color-fg-muted;
+  position: relative;
+
+  svg {
+    transition: $trans-3;
+  }
+
+  &::before {
+    position: absolute;
+    content: "";
+    width: 1px;
+    height: 100%;
+    left: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: $color-border-subtle;
+    pointer-events: none;
+  }
+
+  svg {
+    margin-left: 2px;
+  }
+
+  &:hover {
+    color: $color-fg;
+
+    svg {
+      stroke: $color-accent;
+    }
+  }
+}
+
+.printButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-family: inherit;
+  color: $color-fg-muted;
+  border: 1px solid $color-border-subtle;
+  border-radius: 8px;
+  cursor: pointer;
+
+  svg {
+    transition: $trans-3;
+  }
+
+  &:hover {
+    color: $color-fg;
+    border-color: $color-accent;
+
+    svg {
+      stroke: $color-accent;
+    }
+  }
+
+  @media (max-width: $vp-550) {
+    width: 100%;
+    justify-content: center;
+    margin-top: 5px;
+  }
+}
+
+// Sections
+
+.section {
+  padding: 40px 0;
+  margin: 0;
+  border-top: 1px solid $color-border-subtle;
+}
+
+.sectionTitle {
+  margin: 0 0 20px;
+  padding: 0;
+  text-transform: uppercase;
+  font-size: 20px;
+  letter-spacing: $text-spacing-5;
+  color: $color-fg;
+}
+
+.summaryText {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  line-height: 1.55;
+  color: $color-fg-muted;
+}
+
+// Experience
+
+.job {
+  margin-bottom: 56px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  @media print {
+    margin-bottom: 32px;
+  }
+}
+
+.jobHeader {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 20px;
+  margin-bottom: 6px;
+}
+
+.jobRole {
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  color: $color-fg;
+}
+
+.jobPeriod {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: $text-spacing-5;
+  color: $color-fg-secondary;
+}
+
+.jobCompany {
+  margin: 0 0 12px;
+  padding: 0;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: baseline;
+  gap: 14px;
+  font-size: 15px;
+}
+
+.jobCompanyLink {
+  color: $color-fg-muted;
+
+  svg {
+    margin-left: 2px;
+    transition: $trans-3;
+  }
+
+  &:hover {
+    color: $color-fg;
+
+    svg {
+      stroke: $color-accent;
+    }
+  }
+}
+
+.jobLocation {
+  font-size: 13px;
+  color: $color-fg-secondary;
+  letter-spacing: $text-spacing-5;
+}
+
+.jobDescription {
+  margin: 0 0 16px;
+  padding: 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: $color-fg-muted;
+}
+
+.jobBullets {
+  box-sizing: border-box;
+  margin: 0 0 16px;
+  padding: 0 0 0 18px;
+  list-style: initial;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.jobBullet {
+  font-size: 15px;
+  line-height: 1.5;
+  color: $color-fg-muted;
+
+  &::marker {
+    color: $color-accent;
+    font-size: 13px;
+  }
+}
+
+.jobStack {
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+  color: $color-fg-secondary;
+  letter-spacing: $text-spacing-5;
+}
+
+.experienceNote {
+  margin: 40px 0 0;
+  padding: 0;
+  font-size: 13px;
+  font-style: italic;
+  line-height: 1.5;
+  color: $color-fg-secondary;
+}
+
+// Skills
+
+.skillGroups {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px 60px;
+
+  @media (max-width: $vp-550) {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+}
+
+.skillGroupTitle {
+  margin: 0 0 10px;
+  padding: 0;
+  font-size: 15px;
+  color: $color-fg;
+  letter-spacing: $text-spacing-5;
+}
+
+.skillList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.skillItem {
+  font-size: 14px;
+  line-height: 1.4;
+  color: $color-fg-muted;
+  position: relative;
+  padding-left: 14px;
+
+  &::before {
+    position: absolute;
+    content: "";
+    width: 4px;
+    height: 4px;
+    left: 0;
+    top: 0.55em;
+    border-radius: 50%;
+    background-color: $color-accent;
+  }
+}
+
+// Languages
+
+.languageList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.languageItem {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.languageName {
+  color: $color-fg;
+}
+
+.languageLevel {
+  color: $color-fg-muted;
+}
+
+// Print (PDF via browser print dialog)
+
+@media print {
+  .wrapper {
+    width: 100%;
+    max-width: none;
+    padding: 0;
+  }
+
+  .availability,
+  .printButton {
+    display: none;
+  }
+
+  .cvHeader {
+    margin-bottom: 20px;
+  }
+
+  .name,
+  .sectionTitle,
+  .jobRole,
+  .skillGroupTitle,
+  .languageName {
+    color: #000;
+  }
+
+  .headline,
+  .summaryText,
+  .jobDescription,
+  .jobBullet,
+  .skillItem,
+  .languageLevel {
+    color: #222;
+  }
+
+  .meta,
+  .jobPeriod,
+  .jobLocation,
+  .jobStack,
+  .experienceNote {
+    color: #555;
+  }
+
+  .contactLink,
+  .jobCompanyLink {
+    color: #000;
+
+    svg {
+      display: none;
+    }
+  }
+
+  .contactLink::before {
+    background-color: #ccc;
+  }
+
+  .section {
+    border-top-color: #ddd;
+    padding: 24px 0;
+    break-inside: avoid-page;
+  }
+
+  .jobBullet::marker,
+  .skillItem::before {
+    color: #555;
+    background-color: #555;
+  }
+
+  .job {
+    break-inside: avoid-page;
+  }
+}

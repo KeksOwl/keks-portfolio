@@ -21,6 +21,10 @@ Outside of work I run tabletop RPG campaigns, build FoundryVTT modules, and tran
 
 Working with TypeScript, React and modern frontend tooling on complex interactive surfaces at Songsterr.
 
+## CV
+
+Full CV at https://keksowl.com/cv — Frontend Engineer at Songsterr (Mar 2025 — present): complex product UI (drum notation, AI panel redesigns), shared component architecture (floating UI refactor), A/B experiments, and senior-level i18n infrastructure — a typed gettext/.po workflow for ten-plus languages and a locale-import static analyzer wired into the CI of multiple services. Also the sole full-stack developer of topnevesta.com (Next.js + TypeScript) and smart-stat.ru (WordPress/WooCommerce) since 2022.
+
 ## Tech Stack
 
 - TypeScript, React, Next.js
@@ -36,9 +40,12 @@ Working with TypeScript, React and modern frontend tooling on complex interactiv
 
 ## Blog Topics
 
-- Feedback loops for AI coding agents
-- Localizing into 11 languages you can't read (AI translation verification)
+- Localization as a frontend platform: type-safe translations, grammar-aware word order, domain modeling, runtime locale resolution
+- A static analyzer for a class of silent localization bugs, wired into the CI of multiple services
+- The verification layer: how I actually ship production code with AI coding agents
+- Shipping ten languages you can't read: verifying AI-generated translations
 - Taste as an engineering skill in the age of code generation
+- Feedback loops for AI agents, and why they're built to agree with you
 
 ## Site
 

@@ -8,16 +8,21 @@ export default function LangSwitcher() {
 
   return (
     <div className={styles.switcher} data-paw-target>
-      {locale === "en" ? (
-        <span className={styles.active}>EN</span>
-      ) : (
-        <button className={styles.btn} onClick={() => setLocale("en")}>EN</button>
-      )}
-      {locale === "ru" ? (
-        <span className={styles.active}>RU</span>
-      ) : (
-        <button className={styles.btn} onClick={() => setLocale("ru")}>RU</button>
-      )}
+      <span className={`${styles.indicator} ${locale === "ru" ? styles.indicatorRight : ""}`} aria-hidden="true" />
+      <button
+        className={`${styles.btn} ${locale === "en" ? styles.active : ""}`}
+        onClick={() => setLocale("en")}
+        aria-pressed={locale === "en"}
+      >
+        EN
+      </button>
+      <button
+        className={`${styles.btn} ${locale === "ru" ? styles.active : ""}`}
+        onClick={() => setLocale("ru")}
+        aria-pressed={locale === "ru"}
+      >
+        RU
+      </button>
     </div>
   );
 }

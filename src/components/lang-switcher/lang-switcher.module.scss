@@ -1,37 +1,72 @@
 .switcher {
+  position: relative;
   display: inline-flex;
   flex-flow: row nowrap;
-  align-items: center;
-  gap: 15px;
-  font-size: 14px;
+  align-items: stretch;
+  font-size: 13px;
   letter-spacing: $text-spacing-5;
   text-transform: uppercase;
-  color: $color-fg-secondary;
-
-  position: relative;
+  border: 1px solid $color-border-subtle;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: $trans-3;
 
   &::before {
     position: absolute;
-    content: "/";
+    content: "";
+    width: 1px;
+    height: 150%;
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) rotate(15deg);
+    background-color: $color-border-subtle;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  &:hover {
+    border-color: $color-accent;
+  }
+}
+
+.indicator {
+  position: absolute;
+  top: 0;
+  left: -10%;
+  width: 60%;
+  height: 100%;
+  background-color: $color-accent-glow;
+  transform: skewX(-15deg);
+  transition: transform $trans-3 ease;
+}
+
+.indicatorRight {
+  transform: translateX(100%) skewX(-15deg);
+}
+
+.btn {
+  position: relative;
+  z-index: 1;
+  min-width: 44px;
+  padding: 8px 0;
+  text-align: center;
+  font-size: inherit;
+  font-family: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: $color-fg-secondary;
+  transition: $trans-3;
+  cursor: pointer;
+
+  &:hover {
+    color: $color-accent;
   }
 }
 
 .active {
   font-weight: 700;
   color: $color-fg;
-  padding: 8px;
-  margin: -8px;
-}
-
-.btn {
-  color: $color-fg-secondary;
-  transition: $trans-3;
-  cursor: pointer;
-  padding: 8px;
-  margin: -8px;
+  cursor: default;
 
   &:hover {
     color: $color-fg;

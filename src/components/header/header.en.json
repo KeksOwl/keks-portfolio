@@ -1,6 +1,9 @@
 {
   "spec": "Frontend Engineer",
+  "home": "Home",
   "work": "Work",
   "writing": "Writing",
-  "about": "About"
+  "about": "About",
+  "cv": "CV",
+  "menu": "Menu"
 }

@@ -1,6 +1,6 @@
-# KeksOwl blog
+# KeksOwl portfolio
 
-Personal bilingual blog (EN/RU) built with Next.js, TypeScript, SCSS, and MDX.
+Personal bilingual site (EN/RU) — home, CV and blog — built with Next.js, TypeScript, SCSS, and MDX.
 
 ## Stack
 
@@ -29,12 +29,12 @@ Static output goes to `out/` — ready for GitHub Pages or any static hosting.
 
 ## Adding a blog post
 
-Create a folder in `content/blog/` with `en.mdx` and `ru.mdx`:
+Create a folder in `content/blog/` with `en.mdx` (required) and `ru.mdx` (optional):
 
 ```
 content/blog/my-post/
-├── en.mdx
-└── ru.mdx
+├── en.mdx   # required — the page is generated from the English version
+└── ru.mdx   # optional — without it the Russian locale falls back to English
 ```
 
 Each file starts with frontmatter:
@@ -49,11 +49,19 @@ date: "2026-01-01"
 Content here...
 ```
 
+Finally, add the post URL to `public/sitemap.xml`:
+
+```xml
+<url>
+  <loc>https://keksowl.com/blog/my-post</loc>
+</url>
+```
+
 ---
 
-# Блог KeksOwl
+# Портфолио KeksOwl
 
-Личный двуязычный блог (EN/RU) на Next.js, TypeScript, SCSS и MDX.
+Личный двуязычный сайт (EN/RU) — главная, резюме и блог — на Next.js, TypeScript, SCSS и MDX.
 
 ## Стек
 
@@ -82,12 +90,12 @@ pnpm build
 
 ## Добавление поста
 
-Создать папку в `content/blog/` с файлами `en.mdx` и `ru.mdx`:
+Создать папку в `content/blog/` с файлом `en.mdx` (обязателен) и `ru.mdx` (опционален):
 
 ```
 content/blog/my-post/
-├── en.mdx
-└── ru.mdx
+├── en.mdx   # обязателен — страница генерируется по английской версии
+└── ru.mdx   # опционален — без него русская локаль откатывается на английский
 ```
 
 Каждый файл начинается с frontmatter:
@@ -100,4 +108,12 @@ date: "2026-01-01"
 ---
 
 Контент тут...
+```
+
+В конце добавить URL поста в `public/sitemap.xml`:
+
+```xml
+<url>
+  <loc>https://keksowl.com/blog/my-post</loc>
+</url>
 ```

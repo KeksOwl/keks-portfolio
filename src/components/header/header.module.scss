@@ -49,6 +49,133 @@
   }
 }
 
+.right {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  gap: 25px;
+
+  @media (max-width: $vp-mobile) {
+    gap: 15px;
+  }
+}
+
+.nav {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  gap: 20px;
+
+  @media (max-width: $vp-tablet) {
+    display: none;
+  }
+}
+
+.navLink {
+  font-size: 14px;
+  color: $color-fg-muted;
+
+  &:hover {
+    color: $color-accent;
+  }
+}
+
+.burger {
+  display: none;
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 38px;
+  height: 34px;
+  border: 1px solid $color-border-subtle;
+  border-radius: 8px;
+  cursor: pointer;
+
+  @media (max-width: $vp-tablet) {
+    display: inline-flex;
+  }
+
+  span {
+    display: block;
+    width: 16px;
+    height: 2px;
+    border-radius: 1px;
+    background-color: $color-fg-muted;
+    transition: $trans-3;
+  }
+
+  &:hover {
+    border-color: $color-accent;
+
+    span {
+      background-color: $color-fg;
+    }
+  }
+}
+
+.burgerOpen {
+  span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  span:nth-child(2) {
+    opacity: 0;
+  }
+
+  span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+}
+
+.mobileMenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  bottom: calc(100% - 100dvh);
+  left: 0;
+  right: 0;
+  flex-direction: column;
+  padding: 10px 100px 20px;
+  background-color: $color-bg-elevated;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  opacity: 0;
+  transform: translateY(-8px);
+  visibility: hidden;
+  transition: opacity $trans-3, transform $trans-3, visibility $trans-3;
+
+  @media (max-width: $vp-tablet) {
+    display: flex;
+  }
+
+  @media (max-width: $vp-mobile) {
+    padding: 6px $page-gutter-mobile 16px;
+  }
+}
+
+.mobileMenuOpen {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+}
+
+.mobileLink {
+  padding: 14px 0;
+  font-size: 15px;
+  color: $color-fg-muted;
+  border-bottom: 1px solid $color-border-subtle;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    color: $color-accent;
+  }
+}
+
 .spec {
   font-size: 12px;
   color: $color-fg-secondary;
@@ -65,5 +192,9 @@
     left: 0;
     top: 50%;
     transform: translateY(-50%);
+  }
+
+  @media (max-width: $vp-550) {
+    display: none;
   }
 }
