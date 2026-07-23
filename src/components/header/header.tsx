@@ -36,6 +36,7 @@ export default function Header() {
       </Link>
       <div className={styles.right}>
         <nav className={styles.nav} data-paw-target>
+          <Link href="/lab" className={styles.navLink}>{dict.lab}</Link>
           <Link href="/cv" className={styles.navLink}>{dict.cv}</Link>
         </nav>
         <LangSwitcher />
@@ -53,6 +54,7 @@ export default function Header() {
       </div>
       <nav className={`${styles.mobileMenu} ${menuOpen ? styles.mobileMenuOpen : ""}`} data-paw-target>
         <Link href="/" className={styles.mobileLink} onClick={closeMenu}>{dict.home}</Link>
+        <Link href="/lab" className={styles.mobileLink} onClick={closeMenu}>{dict.lab}</Link>
         <Link href="/cv" className={styles.mobileLink} onClick={closeMenu}>{dict.cv}</Link>
       </nav>
       <NavigationProgress />

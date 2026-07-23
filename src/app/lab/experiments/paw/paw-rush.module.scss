@@ -1,0 +1,138 @@
+.target {
+  --life-ms: 1100ms;
+  position: absolute;
+  border: none;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 40% 35%, #f2d4a8 0%, $color-accent 45%, #b88445 100%);
+  cursor: inherit;
+  transform: scale(0.6);
+  opacity: 0;
+  animation:
+    popIn 160ms ease-out forwards,
+    lifePulse var(--life-ms) linear 160ms forwards;
+  touch-action: manipulation;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 26%;
+    border-radius: 50%;
+    background: rgba(14, 12, 10, 0.18);
+  }
+}
+
+.targetReduced {
+  animation: none;
+  opacity: 1;
+  transform: scale(1);
+}
+
+.dying {
+  /* Still clickable while fading — visibility must match hitability */
+  animation: dieOut 220ms ease-in forwards;
+}
+
+.hitRing {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  margin: -28px 0 0 -28px;
+  border-radius: 50%;
+  border: 2px solid rgba(225, 172, 110, 0.7);
+  pointer-events: none;
+  animation: ringOut 420ms ease-out forwards;
+}
+
+.hitScore {
+  position: absolute;
+  margin-left: -20px;
+  margin-top: -36px;
+  font-size: 14px;
+  font-weight: 600;
+  color: $color-accent;
+  pointer-events: none;
+  animation: scorePop 560ms ease-out forwards;
+  text-shadow: 0 1px 8px rgba(14, 12, 10, 0.8);
+}
+
+@keyframes popIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes lifePulse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(1.05);
+  }
+  55% {
+    opacity: 1;
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  100% {
+    opacity: 0.28;
+    transform: scale(0.88);
+    filter: brightness(0.85);
+  }
+}
+
+@keyframes dieOut {
+  from {
+    opacity: 0.28;
+    transform: scale(0.88);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+}
+
+@keyframes ringOut {
+  from {
+    opacity: 0.85;
+    transform: scale(0.55);
+  }
+  to {
+    opacity: 0;
+    transform: scale(2.1);
+  }
+}
+
+@keyframes scorePop {
+  0% {
+    opacity: 0;
+    transform: translateY(6px) scale(0.9);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-18px) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .target {
+    animation: none;
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .dying {
+    animation: none;
+    opacity: 0;
+  }
+
+  .hitRing,
+  .hitScore {
+    animation: none;
+    opacity: 0;
+  }
+}

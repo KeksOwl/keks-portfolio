@@ -1,0 +1,86 @@
+.heading {
+  margin: 0 0 12px;
+  font-size: 32px;
+  color: $color-fg;
+
+  @media (max-width: $vp-550) {
+    font-size: 26px;
+  }
+}
+
+.intro {
+  margin: 0;
+  font-size: 18px;
+  color: $color-fg-muted;
+  line-height: 1.5;
+}
+
+.gameList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gameLink {
+  display: block;
+  box-sizing: border-box;
+  padding: 4px 0 10px;
+  color: inherit;
+
+  &:hover {
+    .gameTitle {
+      color: $color-accent;
+    }
+  }
+}
+
+.gameTitle {
+  margin: 0 0 8px;
+  font-size: 22px;
+  color: $color-fg;
+  transition: color $trans-3;
+
+  @media (max-width: $vp-550) {
+    font-size: 20px;
+  }
+}
+
+.gameBlurb {
+  margin: 0 0 12px;
+  font-size: 16px;
+  color: $color-fg-muted;
+  line-height: 1.45;
+}
+
+.cta {
+  font-size: 14px;
+  color: $color-accent;
+}
+
+.experimentHead {
+  margin-bottom: 18px;
+
+  @media (max-width: $vp-mobile) {
+    margin-bottom: 14px;
+  }
+}
+
+.experimentTitle {
+  margin: 0 0 8px;
+  font-size: 24px;
+  color: $color-fg;
+
+  @media (max-width: $vp-550) {
+    font-size: 22px;
+  }
+}
+
+.experimentBlurb {
+  margin: 0;
+  font-size: 15px;
+  color: $color-fg-muted;
+  line-height: 1.45;
+}

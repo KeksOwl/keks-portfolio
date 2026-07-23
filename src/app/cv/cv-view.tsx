@@ -21,8 +21,8 @@ export default function CvView() {
   const isOpen = true;
 
   return (
-    <div className={styles.wrapper}>
-      <header className={styles.cvHeader}>
+    <>
+      <section className="container">
         <p className={`${styles.availability} ${isOpen ? "" : styles.availabilityNegative}`}>
           {isOpen ? dict.header.available : dict.header.notAvailable}
         </p>
@@ -50,18 +50,20 @@ export default function CvView() {
             {dict.header.downloadPdf}
           </button>
         </div>
-      </header>
+      </section>
 
       <Reveal>
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>{dict.summary.title}</h2>
+        <hr />
+        <section className="container section">
+          <h2 className="section-title">{dict.summary.title}</h2>
           <p className={styles.summaryText}>{dict.summary.text}</p>
         </section>
       </Reveal>
 
       <Reveal>
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>{dict.experience.title}</h2>
+        <hr />
+        <section className="container section">
+          <h2 className="section-title">{dict.experience.title}</h2>
           {dict.experience.jobs.map(job => (
             <article className={styles.job} key={job.id}>
               <div className={styles.jobHeader}>
@@ -91,8 +93,9 @@ export default function CvView() {
       </Reveal>
 
       <Reveal>
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>{dict.skills.title}</h2>
+        <hr />
+        <section className="container section">
+          <h2 className="section-title">{dict.skills.title}</h2>
           <ul className={styles.skillGroups}>
             {dict.skills.groups.map(group => (
               <li className={styles.skillGroup} key={group.title}>
@@ -109,8 +112,9 @@ export default function CvView() {
       </Reveal>
 
       <Reveal>
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>{dict.languages.title}</h2>
+        <hr />
+        <section className="container section">
+          <h2 className="section-title">{dict.languages.title}</h2>
           <ul className={styles.languageList}>
             {dict.languages.items.map(item => (
               <li className={styles.languageItem} key={item.name}>
@@ -121,6 +125,6 @@ export default function CvView() {
           </ul>
         </section>
       </Reveal>
-    </div>
+    </>
   );
 }

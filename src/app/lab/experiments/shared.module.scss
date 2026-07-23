@@ -1,0 +1,157 @@
+.hud {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: baseline;
+  gap: 10px 18px;
+  margin-bottom: 12px;
+  font-size: 12px;
+  color: $color-fg-secondary;
+  letter-spacing: $text-spacing-5;
+  text-transform: uppercase;
+}
+
+.hudValue {
+  color: $color-fg;
+  font-variant-numeric: tabular-nums;
+}
+
+.hudAccent {
+  color: $color-accent;
+}
+
+.toolbar {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.toolLabel {
+  font-size: 12px;
+  letter-spacing: $text-spacing-5;
+  text-transform: uppercase;
+  color: $color-fg-secondary;
+  margin-right: 4px;
+}
+
+.toolBtn {
+  padding: 7px 12px;
+  font-size: 13px;
+  color: $color-fg-muted;
+  border: 1px solid $color-border-subtle;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:hover {
+    color: $color-fg;
+  }
+}
+
+.toolBtnActive {
+  color: $color-fg;
+  border-color: rgba(225, 172, 110, 0.45);
+  background: rgba(225, 172, 110, 0.08);
+}
+
+.arena {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  min-height: 280px;
+  height: min(58vh, 520px);
+  border: 1px solid $color-border-subtle;
+  border-radius: 12px;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 40%, rgba(225, 172, 110, 0.06), transparent 70%),
+    linear-gradient(180deg, #13110f 0%, $color-bg 100%);
+  overflow: hidden;
+  touch-action: manipulation;
+  user-select: none;
+
+  @media (max-width: $vp-mobile) {
+    min-height: 260px;
+    height: min(52dvh, 420px);
+    border-radius: 10px;
+  }
+
+  @media (max-width: $vp-550) {
+    height: min(48dvh, 380px);
+  }
+}
+
+.arenaTall {
+  @media (max-width: $vp-mobile) {
+    min-height: 340px;
+    height: min(68dvh, 560px);
+  }
+
+  @media (max-width: $vp-550) {
+    min-height: 320px;
+    height: min(64dvh, 520px);
+  }
+}
+
+/* Same paw mark as CatPaw — fine pointer only */
+$paw-cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 64 64' fill='none'%3E%3Cellipse cx='32' cy='42' rx='12' ry='14' fill='%23ededed'/%3E%3Cellipse cx='20' cy='26' rx='6' ry='8' fill='%23ededed'/%3E%3Cellipse cx='32' cy='22' rx='6' ry='8' fill='%23ededed'/%3E%3Cellipse cx='44' cy='26' rx='6' ry='8' fill='%23ededed'/%3E%3Cellipse cx='32' cy='42' rx='8' ry='9' fill='%23d4a373' opacity='0.6'/%3E%3Cellipse cx='20' cy='26' rx='4' ry='5' fill='%23d4a373' opacity='0.6'/%3E%3Cellipse cx='32' cy='22' rx='4' ry='5' fill='%23d4a373' opacity='0.6'/%3E%3Cellipse cx='44' cy='26' rx='4' ry='5' fill='%23d4a373' opacity='0.6'/%3E%3C/svg%3E") 12 14, pointer;
+
+.arenaPaw {
+  cursor: $paw-cursor;
+
+  @media (pointer: coarse) {
+    cursor: auto;
+  }
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(14, 12, 10, 0.72);
+  backdrop-filter: blur(2px);
+  text-align: center;
+  padding: 20px 16px;
+  overflow: auto;
+}
+
+.overlayTitle {
+  margin: 0;
+  font-size: 18px;
+  color: $color-fg;
+
+  @media (max-width: $vp-550) {
+    font-size: 16px;
+  }
+}
+
+.overlayMeta {
+  margin: 0;
+  font-size: 14px;
+  color: $color-fg-muted;
+}
+
+.playBtn {
+  margin-top: 4px;
+  padding: 10px 22px;
+  font-size: 14px;
+  color: $color-bg;
+  background-color: $color-accent;
+  border-radius: 999px;
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(1.08);
+  }
+}
+
+.hint {
+  margin: 12px 0 0;
+  font-size: 13px;
+  color: $color-fg-secondary;
+  line-height: 1.45;
+}
