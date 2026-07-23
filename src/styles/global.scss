@@ -29,8 +29,9 @@ body {
 
 .body {
   min-height: 100vh;
+  min-height: 100dvh;
   display: grid;
-  grid-template-rows: min-content 1fr min-content;
+  grid-template-rows: auto 1fr auto;
   position: relative;
   z-index: 1;
 }
@@ -40,6 +41,7 @@ html[data-locale="ru"]:not([data-hydrated]) .body {
 }
 
 main {
+  min-width: 0;
   padding: $page-gutter;
 
   @media (max-width: $vp-mobile) {

@@ -47,6 +47,14 @@ export default function CatPaw() {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
       const target = e.target as HTMLElement;
+      // Game arenas (and similar) opt out so the swat paw doesn't fight the UI
+      if (target.closest("[data-no-paw]")) {
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+          timeoutRef.current = null;
+        }
+        return;
+      }
       if (target.closest("a, button, [data-paw-target]")) {
         timeoutRef.current = setTimeout(swat, 700);
       }

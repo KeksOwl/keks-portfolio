@@ -1,15 +1,47 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useSyncExternalStore } from "react";
+import { usePathname } from "next/navigation";
 import styles from "./corner-cat.module.scss";
 
 type CatState = "sleep" | "awake" | "active";
 
+function subscribeReduced(cb: () => void) {
+  const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+  mq.addEventListener("change", cb);
+  return () => mq.removeEventListener("change", cb);
+}
+
+function getReducedSnapshot() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function getReducedServerSnapshot() {
+  return false;
+}
+
 export default function CornerCat() {
+  const pathname = usePathname() ?? "";
+  const isGamePage = pathname.startsWith("/lab/") && pathname !== "/lab";
+  const reducedMotion = useSyncExternalStore(subscribeReduced, getReducedSnapshot, getReducedServerSnapshot);
+
   const [state, setState] = useState<CatState>("sleep");
+  const [leftPath, setLeftPath] = useState<string | null>(null);
   const idleTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const activeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const scrollGate = useRef(false);
+
+  // Reset leave state when returning to normal pages
+  if (!isGamePage && leftPath !== null) {
+    setLeftPath(null);
+  }
+  // On game page with reduced motion — disappear immediately (no walk anim)
+  if (isGamePage && reducedMotion && leftPath !== pathname) {
+    setLeftPath(pathname);
+  }
+
+  const gone = isGamePage && leftPath === pathname;
+  const leaving = isGamePage && !gone && !reducedMotion;
 
   const resetIdleTimer = useCallback(() => {
     if (idleTimeout.current) clearTimeout(idleTimeout.current);
@@ -25,6 +57,7 @@ export default function CornerCat() {
   }, [resetIdleTimer]);
 
   const handleClick = useCallback(() => {
+    if (leaving || gone) return;
     if (activeTimeout.current) clearTimeout(activeTimeout.current);
     if (idleTimeout.current) clearTimeout(idleTimeout.current);
 
@@ -34,11 +67,10 @@ export default function CornerCat() {
       setState("awake");
       resetIdleTimer();
     }, 1500);
-  }, [resetIdleTimer]);
+  }, [leaving, gone, resetIdleTimer]);
 
   useEffect(() => {
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) return;
+    if (gone || leaving || reducedMotion) return;
 
     const onScroll = () => {
       if (scrollGate.current) return;
@@ -56,12 +88,31 @@ export default function CornerCat() {
       if (idleTimeout.current) clearTimeout(idleTimeout.current);
       if (activeTimeout.current) clearTimeout(activeTimeout.current);
     };
-  }, [wake]);
+  }, [wake, gone, leaving, reducedMotion]);
+
+  useEffect(() => {
+    if (!leaving) return;
+    const id = requestAnimationFrame(() => setState("awake"));
+    return () => cancelAnimationFrame(id);
+  }, [leaving]);
+
+  if (gone) return null;
 
   return (
     <div
-      className={`${styles.cat}${state !== "sleep" ? ` ${styles[state]}` : ""}`}
+      className={[
+        styles.cat,
+        state !== "sleep" ? styles[state] : "",
+        leaving ? styles.leaving : "",
+      ]
+        .filter(Boolean)
+        .join(" ")}
       onClick={handleClick}
+      onAnimationEnd={(e) => {
+        if (e.animationName.includes("walkOff") && isGamePage) {
+          setLeftPath(pathname);
+        }
+      }}
       aria-hidden="true"
     >
       <svg
@@ -82,14 +133,7 @@ export default function CornerCat() {
 
         {/* Body */}
         <g className={styles.bodyWrap}>
-          <ellipse
-            className={styles.body}
-            cx="32"
-            cy="44"
-            rx="18"
-            ry="13"
-            fill="#ededed"
-          />
+          <ellipse className={styles.body} cx="32" cy="44" rx="18" ry="13" fill="#ededed" />
         </g>
 
         {/* Head */}

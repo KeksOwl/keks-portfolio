@@ -1,0 +1,51 @@
+.nav {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 6px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0 0 20px;
+  max-width: 100%;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (max-width: $vp-mobile) {
+    margin-bottom: 16px;
+  }
+}
+
+.link {
+  flex: 0 0 auto;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: $color-fg-secondary;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  white-space: nowrap;
+
+  &:hover {
+    color: $color-fg;
+  }
+
+  @media (max-width: $vp-550) {
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+}
+
+.active {
+  color: $color-fg;
+  border-color: $color-border-subtle;
+  background-color: rgba(225, 172, 110, 0.06);
+}
+
+.stickyMark {
+  color: $color-accent;
+  margin-left: 4px;
+}

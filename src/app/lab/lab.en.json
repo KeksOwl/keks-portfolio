@@ -1,0 +1,25 @@
+{
+  "title": "Lab",
+  "heading": "Lab",
+  "intro": "A small playground of interactive experiments. Click, tap, chase a score — spend a minute for fun.",
+  "playground": "Playground",
+  "open": "Open",
+  "play": "Play",
+  "again": "Play again",
+  "score": "Score",
+  "best": "Best",
+  "combo": "Combo",
+  "time": "Time",
+  "ready": "Ready when you are",
+  "difficulty": "Difficulty",
+  "easy": "Easy",
+  "normal": "Normal",
+  "hard": "Hard",
+  "experiments": {
+    "paw": {
+      "title": "Paw Rush",
+      "blurb": "Thirty seconds. Hit the targets. Chase the combo.",
+      "hint": "Tap or click targets before they fade. Best score is saved per difficulty."
+    }
+  }
+}
