@@ -1,0 +1,65 @@
+---
+title: "Taste Is an Engineering Skill"
+description: "Why knowing what 'right' feels like — and recognizing when a UI has quietly rotted — matters more than ever when machines generate infinite options."
+date: "2026-05-30"
+---
+
+There's a skill that's hard to interview for and impossible to measure in story points, and it increasingly separates frontend people remember from frontend they forget: knowing something is wrong before you can articulate why.
+
+We call it "taste." It's why one engineer's component feels polished and another's feels off, even when both pass the same acceptance criteria. I want to argue that in the age of generated code, taste isn't a soft skill that's nice to have on top of the engineering. It *is* the engineering.
+
+## What taste looks like in code
+
+Taste isn't about aesthetics. It's about decisions:
+
+- Naming a variable `isVisible` instead of `show`, because the first implies a boolean and the second an action.
+- Putting a 200ms transition on a state change instead of making it instant, because instant reads as broken.
+- Recognizing that a component doing three things should be two, even though it "works."
+- Knowing when an abstraction is premature, and when the repetition you're tolerating is the real problem.
+
+None of that shows up in a test suite. All of it shows up in whether people still want to work in your codebase six months later.
+
+## The example that taught me: when "fine" rots
+
+On the product I work on, toast notifications had grown the way these things do — added by different people, in different iterations, each one locally reasonable. Every individual toast was *fine*. Collectively they were a mess: duplicated logic, inconsistent localization, dead code from approaches that had been half-replaced and never cleaned up. Nothing was broken. Nothing was reported. It just quietly got worse with every "fine" addition.
+
+I rebuilt it into one centralized approach to toast localization, folded the prior iterations into it, and deleted the dead code along the way. The work touched a few hundred files. The user-visible change was close to zero. The codebase-health change was enormous — and the only reason to do it at all was *taste*: the ability to feel that a pile of individually-acceptable decisions had crossed the line into something nobody should have to maintain.
+
+UI and the code behind it **rots if no one is watching** — not through a single bad decision, but through a thousand defensible ones that no automated check will ever flag. Catching that drift isn't a process you can install. It takes a person with taste deciding it's time.
+
+## Taste in a redesign, not just a cleanup
+
+It cuts the other way too. When I redesigned our drum notation, the visual work was the obvious part — but the decision that mattered was structural: the labels for drum pieces weren't strings to translate, they were a domain model to map. Recognizing that, and building a dedicated hook to own the mapping instead of scattering conditionals through the view, is architectural taste. The redesign looks clean because the structure underneath earns it. They're the same skill at different layers.
+
+## The taste stack
+
+Taste operates on several levels at once:
+
+- **Visual.** Spacing that breathes, color that communicates hierarchy, motion that guides attention without demanding it. Designers train for this; frontend engineers need it too, because implementation choices decide the final result.
+- **Architectural.** Knowing when a pattern is pulling its weight. A custom hook that saves three lines isn't worth the indirection. An abstraction that needs documentation to use has already failed.
+- **Interaction.** Not how it looks — how it *feels*. The 16ms that separates "responsive" from "laggy." The scroll animation that tips into nauseating. The form that flows versus the one that fights you.
+- **Communication.** Error messages that help instead of blame, empty states that guide instead of dead-end, microcopy that respects attention. Words in a UI are engineering decisions wearing content's clothes.
+
+## Why generation makes taste the scarce resource
+
+Before AI, writing code was the bottleneck. If you wanted three approaches, you wrote all three — so most people wrote one and shipped it. The constraint was production.
+
+That constraint is gone. An agent generates five valid approaches in minutes. The bottleneck is no longer "can we produce options," it's "can we recognize which option is right." And that can't be automated, because it depends on context that isn't in the codebase: how this evolves in six months, whether it matches how the team thinks, whether the next person will understand why the decision was made.
+
+An agent optimizes for the prompt. Taste optimizes for the future. The danger of generated code was never that it's bad — it's that it's *fine*. It compiles, it passes, it doesn't obviously break anything. "Fine" across a thousand decisions is exactly the rot I described above, except now you can produce it faster than ever.
+
+## How taste develops
+
+It isn't innate, and it isn't mystical. It trains through exposure and feedback:
+
+1. **Use good software like a student**, not just a user. Why does this feel right? What decision made this moment work?
+2. **Read others' code to understand their decisions**, not to review them. The best code reads like an argument where each line follows from the last.
+3. **Ship and watch.** Where do users hesitate? What do they complain about that isn't in the tracker?
+4. **Iterate, don't invent.** The good version is usually the third or fourth, each pass removing what didn't earn its place.
+5. **Collect your rejections.** Every time you think "not like that," stop and name why. Eventually the vocabulary gets fast enough to feel like instinct.
+
+## Working with agents, with taste in the loop
+
+The workflow I trust isn't "AI writes, I approve." It's: I define the constraints (taste as input), the agent generates options (production), I evaluate and select (taste as filter), the agent refines on my feedback (iteration), and — the underrated step — I decide when to stop (taste as termination). Agents will iterate forever if you let them; knowing the next pass makes it worse, not better, is pure taste.
+
+In an age where production is nearly free, taste is what's scarce. The engineers who have it — who can look at generated output and say "no, not like that, like *this*" — are the ones who build things people remember, and notice the rot before anyone files a ticket. If that's the kind of work your team cares about, the contact links are in the header.

@@ -1,0 +1,65 @@
+---
+title: "Shipping Ten Languages You Can't Read"
+description: "A practical system for verifying AI-generated translations when you don't speak the target language — the failure modes, the automated guardrails, and the human checks that catch what machines can't."
+date: "2026-05-28"
+---
+
+The product I work on ships in ten languages beyond English. I speak two of them. A lot of the first-draft translation work is done by language models. This post is about the actual problem that creates: how do you QA output in languages you cannot read, and how do you catch the specific ways models fail at translation?
+
+I've written separately about [localization as an engineering discipline](/blog/localization-as-engineering) — the platform underneath all of this. This post is narrower and more practical: the verification system that sits on top.
+
+## Why not just hire translators?
+
+You do, eventually, for the things that matter most. But when you change an English string and need it reflected across ten locales before the next deploy, waiting on human translators is a bottleneck that stops you shipping. Models give you a first draft in seconds. The catch is that a first draft is not a final draft — and the gap between them is where the engineering lives.
+
+## How models fail at translation
+
+After a lot of translation batches, the failures are predictable enough to name:
+
+- **Register drift.** Models formalize casual text and casualize formal text. A breezy "Got it" button comes back as the equivalent of "Acknowledged, thank you." The meaning is right; the tone is wrong.
+- **Context loss.** "Save" can mean *store to disk* or *save money*. With no context, the model picks one — sometimes the wrong one, which is brutal in languages that use entirely different words for the two.
+- **Interpolation breakage.** A string like `"Welcome, {name}!"` needs the placeholder preserved exactly. Models occasionally translate it, re-quote it, or reorder it in a way that breaks the template at runtime.
+- **Length explosion.** German compounds and Russian inflections run noticeably longer than English. Fixed-width UI overflows. The model doesn't know your layout constraints.
+- **Cultural assumptions.** Date formats, number separators, politeness levels — grammatically correct output can still be culturally wrong.
+
+Naming the failure modes is half the work, because it tells you exactly what to build guardrails against.
+
+## The verification pipeline
+
+The goal isn't perfect translation. It's a system that catches errors faster than I create them and gets stricter over time.
+
+### Structural validation first
+
+Before anyone reads anything, automated checks run on every string: all placeholders present and intact, no HTML broken or invented, length within a threshold of the English source, no leftover untranslated English. This requires zero language knowledge and catches a surprising share of issues for nearly free — and it's the same instinct that led me to write a [static analyzer for a class of silent localization bugs](/blog/silent-translation-bugs). Structure is checkable; meaning is harder.
+
+### Back-translation for meaning
+
+Translate the output back to English with a *different* model and diff against the original. Where the back-translation diverges, something went wrong. It catches meaning errors well and misses tone — but knowing what a technique misses is what makes it safe to rely on.
+
+### Parallel model comparison
+
+Generate from two models. Where they agree, confidence is high. Where they diverge, flag for a human. Disagreements often expose an ambiguous *source* string that needs rewriting in English regardless — fixing the source fixes all ten locales at once.
+
+### Glossaries as the source of truth
+
+Ambiguity is the model's biggest opening, so you close it. A mandatory term list pins down what each loaded word means in this product: "Save" is always *this*, this instrument name is always rendered *that* way. I maintain ours, because consistent terminology across hundreds of components and ten languages is not something you get by hoping — it's something one person has to own.
+
+### Contextual prompts and confidence scoring
+
+Don't pass a bare string; pass the string plus where it appears and what it does. `"Save" — button label, stores the user's document` is unambiguous. And ask the model to rate its own confidence per string — they're surprisingly well-calibrated when you explicitly invite honesty about uncertainty, and the low-confidence ones go straight to a human.
+
+### A golden set and screenshot diffing
+
+Keep a set of verified translations and diff every regeneration against it, so changes to previously-approved strings get flagged. Then render the UI in each locale and look at the screenshots — even without reading the text you can see overflow, truncation, and stray placeholder fragments.
+
+## The honest limits
+
+Native-speaker spot checks still matter. You don't need a full-time translator per language, but one native speaker reviewing a small random sample regularly calibrates the whole pipeline and catches the systematic errors — consistent register drift, a recurring cultural miss — that automation can't feel.
+
+And the scariest failure is the one the pipeline is built around: fluent, confident, completely wrong output. It reads naturally to a native speaker *of the model* but means something different, or worse, something offensive. There's no clever prompt that eliminates this. There's only a system honest enough about its own uncertainty to route the risky cases to a human before a user sees them.
+
+## What I'd tell anyone doing this
+
+Treat AI translation like any other automated pipeline: it needs monitoring, validation, feedback loops, and escape hatches. The fact that the output is natural language doesn't exempt it from engineering rigor — if anything it raises the bar, because the failures are fluent.
+
+You don't need to speak ten languages. You need to build a system that's honest about what it doesn't know. If you're standing up multilingual delivery and want to skip a few of the expensive lessons, the contact links are in the header.

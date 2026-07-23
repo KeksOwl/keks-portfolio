@@ -1,0 +1,60 @@
+---
+title: "Localization Is a Frontend Platform, Not a Translation Task"
+description: "What owning internationalization end-to-end actually looks like: type-safe translations, grammar-aware word order, domain modeling, and runtime locale resolution across a real product."
+date: "2026-06-15"
+---
+
+The product I work on ships in ten languages beyond English. If you've never owned localization, you probably picture a folder of text files and a translator. That's the part everyone sees. The part that actually decides whether the feature works is invisible: the pipeline that extracts strings, the type system that knows which translations exist, the runtime that resolves a locale on the server *and* the client without a flash of the wrong language, and the domain logic that knows a drum notation is not a sentence.
+
+One claim shaped how I think about frontend work: **localization is a platform problem, and platform problems are engineering**. Treating it as "translation" is how products end up with strings that silently fall back to English, layouts that overflow in German, and sentences that are grammatically broken in half the locales they ship to.
+
+## The workflow is the product
+
+We use a `gettext`/`.po` workflow. Source strings are wrapped in tags — `gettext` for singular, `ngettext` for plurals — and a build step extracts them into per-component `.po` files. The detail that matters for engineering: that same step generates TypeScript declarations (`*.po.d.ts`) for every set of translations.
+
+That codegen is the difference between localization-as-chore and localization-as-platform. Once translations are typed:
+
+- A missing translation is a **type error**, not a runtime surprise a user finds first.
+- Renaming a string and forgetting a call site doesn't compile.
+- The convention "one component owns one `.po` file" becomes something the build can actually enforce, not a wiki page nobody reads.
+
+The lesson generalizes far past i18n: when you can move a class of mistakes from runtime to compile time, do it. That single decision pays for itself every week.
+
+## Word order is a real bug, not a nitpick
+
+One failure taught me, concretely, that localization isn't translation.
+
+The naive way to build a localized sentence is concatenation: `"You played " + count + " songs"`. It reads fine in English. It is broken in languages where the verb, object, and number land in a different order — which is most of them. You can't fix that with a better translation, because the *structure* is wrong, not the words.
+
+The fix is to stop assembling sentences in code at all. Each locale gets a full template string with a placeholder, and the code splits on the placeholder and injects the dynamic part where the translation says it belongs. The translator controls the order; the code just fills the slot. Rolling this `placeholder + split` pattern across the UI touched a hundred-plus files and fixed grammar in every locale at once.
+
+That's not a copy update. That's an architecture decision about where sentence structure lives.
+
+## Some strings aren't strings
+
+Songsterr is a tab player, so localization runs straight into the music domain. Drum notation is the clearest example: the labels for drum pieces and articulations aren't free text, they're a mapping from a musical model onto each language's conventions. I built and own the hook that drives that mapping (`useDrumLocalization`), shipped alongside a redesign of the drum notation itself. Instrument names and tunings have the same shape — a domain model that has to render correctly in Japanese, Korean, and Turkish without a developer who reads those languages eyeballing every screen.
+
+This is where "frontend" and "domain modeling" stop being separate skills. You can't localize what you can't model.
+
+## Resolving a locale is a systems problem
+
+Picking the right language for a request sounds trivial until you're doing server-side rendering. The locale has to be resolved from cookies, the user's profile, and `Accept-Language`, applied during SSR so the HTML ships with the correct `lang` and content, and then kept consistent on the client through hydration — with no flash of the wrong language. I've contributed to that runtime and to the event model that propagates locale changes through the app.
+
+There was also a performance angle I'm proud of: locale resolution had been living in a background Web Worker, serialized back and forth over Comlink. Moving it into the foreground simplified the data model, removed a class of races, and deleted serialization that never needed to exist. The user-visible win is small; the codebase-health win is not. Knowing which is which is most of the job.
+
+## It's a platform because it isn't only the web
+
+The clearest proof that this is platform work and not "the web team's translation chore" is where it shows up. The same localization discipline runs through the mobile user-testing apps on iOS and Android, the notifications service, localized server error messages in the API, the back-office, and even a small MCP server that exposes internal text tooling to other systems. A single capability — "ship this feature, correctly, in every locale" — rides through five or six repositories at once.
+
+Owning a feature across that many surfaces is, to me, the actual definition of senior frontend work. Not the size of one pull request. The ability to hold one concern coherent across an entire product.
+
+## What this means if you're building something
+
+If localization is on your roadmap and you're treating it as a translation line item, you've already mispriced it. The questions that decide whether it works are engineering questions:
+
+- Can your type system tell you a translation is missing before a user does?
+- Where does sentence structure live — in code, or in the translations where it belongs?
+- Can your domain model render correctly in a language nobody on the team reads?
+- Does your locale resolve identically on the server and the client?
+
+I've spent a long time answering those questions for a product in production, and I'm always happy to talk through them for someone else's. The contact links are in the header.

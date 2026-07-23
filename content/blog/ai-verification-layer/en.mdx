@@ -1,0 +1,78 @@
+---
+title: "The Verification Layer: How I Actually Ship Code With AI Agents"
+description: "The real workflow behind shipping production frontend with coding agents — the stack, the verification mechanisms, and the parts where a human is the entire point."
+date: "2026-06-08"
+---
+
+There's a gap between "AI can write code" and "AI helps me ship better software." The first is a demo. The second is an engineering problem. This post is about the engineering problem, written from inside a codebase that's in production in ten languages and gets daily commits.
+
+I'm not going to tell you AI made me ten times faster. I don't have the data for that claim, and neither does anyone selling it to you. What I can tell you is what my workflow actually looks like, what fails reliably, and what I've built to catch it.
+
+## The stack, briefly
+
+Tooling dates fast, so I'll keep this short and focus on roles, not brand loyalty:
+
+- **Cursor** — primary IDE. Agent mode with codebase-aware context is the core of daily generation. Project rules and conventions go in *before* any code comes out.
+- **Claude Code** with goal-driven runs — autonomous execution against a verifiable exit condition ("tests pass and lint is clean"). It iterates until the condition holds, and I'll often have a second, faster model sanity-check each turn. It's the closest thing to "delegate and verify" that works for me today.
+- **Long-context models** — architecture discussions and reasoning over a problem that needs 200k tokens of context held at once.
+- **A second model for second opinions** — quick lookups, alternative approaches, and deliberately *disagreeing* with the first one.
+- **Playwright** — the automated test suite. This is the objective layer. Tests don't agree with you to be polite.
+
+I've poked at local models too. Useful for understanding how models behave; not yet reliable enough for production work. Maybe next year.
+
+## The loop
+
+A typical unit of AI-assisted work looks like this.
+
+### Constraints before generation
+
+The single highest-leverage thing I do is frontload context. Before the model writes a line: point it at existing files that demonstrate the pattern I want, state what's already in the project, and describe what the output must *not* do — no new dependencies, no server runtime, must survive a static export. Two or three minutes here saves twenty or thirty minutes of fixing output that missed the point.
+
+### Never accept a feature whole
+
+I break every non-trivial task into steps and verify each one. "Create the types" → review → "implement the hook" → review → "build the component." Each step is a checkpoint, and each checkpoint catches a wrong assumption before it compounds. The cost of catching it at step one is a single regeneration. The cost of catching it at step five is throwing away four steps built on top of it.
+
+### Goal-driven runs for boolean problems
+
+When "done" is a boolean — tests pass, build succeeds, lint is clean — I set the goal and let the agent iterate autonomously. It's excellent for repairing a test suite after a refactor, migrations with a clear end state, and mechanical cleanup. It's useless when "done" is a judgment call, because there's nothing for the loop to terminate against.
+
+### Know when to write it yourself
+
+Some things shouldn't be delegated: anything where explaining the context takes longer than writing the code, architectural calls that need history you can't fit in a prompt, and small precise edits where you already know the exact five lines. The real question is never "can the AI do this?" It's "is the verification cost lower than the writing cost?" For a five-line change you understand completely, typing it beats reviewing someone else's version of it.
+
+## The verification layer
+
+Trust, but verify. Mostly verify. The whole approach rests on having objective signals that don't care about your feelings.
+
+**Tests as ground truth.** Playwright has no opinions and doesn't optimize for your approval. Generate code → run tests → feed failures back → iterate. The goal-driven loop automates exactly this. The human value-add is deciding *what* to test, not running it.
+
+**A passing build is non-negotiable.** Models are confident by default; they'll tell you code works while it has type errors. TypeScript and the build step are the second layer — they catch what you miss on read-through, every time.
+
+**Machine-checked invariants beat vigilance.** The most reliable verification isn't a review, it's a property a tool can prove. On our codebase I wrote a static analyzer that enforces a localization convention in CI — it catches a class of bugs that are invisible at runtime and that no amount of careful reading would surface. I wrote about that one [separately](/blog/silent-translation-bugs), but the principle is the load-bearing idea here: where you can convert "be careful" into "the build won't let you," do it.
+
+**Back-translation for languages I can't read.** We ship in ten languages; I speak two. I verify AI translations by translating the output back to English with a different model and diffing against the original. It's not perfect, but it catches the worst failures without requiring fluency in ten languages. (More on that whole pipeline in [another post](/blog/localization-at-scale).)
+
+## The valley of mediocrity
+
+There's a failure mode nobody puts in the demo. AI produces *functional* code easily. It produces *correct* architecture rarely.
+
+The output compiles. It passes basic tests. It doesn't obviously break anything. And it's... fine. "Fine" accumulated across a thousand decisions creates a codebase nobody loves working in. The abstractions don't earn their place, the naming is adequate but not illuminating, the structure is defensible but not inevitable. Every one of those is a decision the model defaulted on and you didn't catch.
+
+This is where engineering judgment earns its keep. The question stops being "does it work?" and becomes "is this how it should work?" — and that question has no automated answer.
+
+## When not to use AI
+
+Being good with these tools means knowing when to put them down:
+
+- **Architecture decisions.** They need project history, team context, and a model of how the system will evolve — none of which fits in a prompt. AI can help you enumerate options; it can't make the call.
+- **Code review that means anything.** Ask an AI to "find issues" and it finds surface issues. Ask "is this good?" and it says yes. Neither is a review. A real review needs to understand what the code is *for*, in the context of the larger system.
+- **When verification costs more than writing.** If the output is five lines you have to read, understand, and validate — and you'd have typed them in thirty seconds — the round trip is a net loss.
+- **Decisions where your voice is the value.** When the point is the specificity of your perspective, delegating defeats the purpose. The irony of writing that in this post is not lost on me.
+
+## The meta-skill
+
+The skill was never prompting. It's context engineering: what you include, what you leave out, which files you point the model at, how you shape the problem so it can't wander into irrelevant territory. It's built on the same foundation as every engineering skill — understanding the system well enough to predict its behavior.
+
+"Human in the middle" isn't a bottleneck in this workflow. It's the entire value proposition. The engineer who directs agents well ships faster *and* better than the one who can't — not because their AI is better, but because their judgment about what "correct" means is better-calibrated. Agents amplify that judgment in both directions. If it's good, they make you much faster. If it isn't, they make you much faster at producing problems. The verification layer is how you make sure it's the first one.
+
+If you're building a team's workflow around agents and want a second pair of eyes from someone who's been living in one, the contact links are in the header.

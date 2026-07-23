@@ -1,0 +1,55 @@
+---
+title: "Feedback Loops for AI Agents (Because They'll Never Tell You You're Wrong)"
+description: "Coding agents are trained to agree with you. That single fact is why steering them is about feedback loops, not prompts — here's how I build the loop."
+date: "2026-05-26"
+---
+
+AI agents can write code. That stopped being the hard part. The hard part is getting them to write *the right* code — the code that fits your architecture, follows your conventions, and doesn't quietly add debt you'll meet again three sprints later.
+
+After working with agents daily on a production codebase, I keep coming back to one idea — and it starts with how these models are trained to behave.
+
+## They're built to agree with you
+
+Language models are trained, through human feedback, to produce responses people approve of. The measurable side effect is a strong bias toward agreement. Ask "this looks clean, right?" and you'll hear yes — about almost anything. Ask "explain why this is good" and you'll get reasons, every time, whether or not it's good.
+
+This matters more than any prompting trick, because it means **the model is not a check on your judgment.** A junior engineer who thinks you're wrong might hesitate, push back, or look uneasy. A model will confidently help you build the wrong thing, and sound pleased to do it. If your only feedback signal is the agent agreeing with you, you have no feedback signal at all.
+
+So the entire job becomes: build loops that produce signal the model's agreeableness can't contaminate.
+
+## The loop has three parts
+
+### Context before generation
+
+Give the agent real constraints before it writes a line — not "use TypeScript," but: here are the files that demonstrate our pattern, here's what's already in the project, here's what the output must not do. The agent doesn't know what your `useLocale()` hook returns or that translation files are colocated with components. Without that, it guesses, and because it's agreeable, it guesses *confidently*. Front-loading context is cheaper than fixing confident wrong output by a wide margin.
+
+### Incremental verification
+
+Never ask for a whole feature at once. "Create the types" → review → "implement the hook" → review → "build the component." Each step is a place to correct course before the agent compounds a wrong assumption. Catch it at step one and it costs a regeneration. Catch it at step five and you throw away four steps built on top of it.
+
+### Explicit rejection with reasoning
+
+"No, try again" is the worst feedback you can give, because the model will cheerfully produce a different wrong answer. Instead: explain *why* ("this causes a hydration mismatch on static export"), point at what's right ("look at how the locale provider handles it"), and constrain the space ("solve it without a new dependency"). Vague rejection teaches nothing. Specific rejection is the actual steering input.
+
+## Patterns that counteract the agreement bias
+
+These are all variations on "phrase the question so agreement is useless":
+
+- **Show, don't tell.** Instead of describing your style, point at two or three files. "Match `header.tsx` and `footer.tsx`" beats any style guide.
+- **Make it argue against itself.** Before accepting a solution, ask the model to attack it. It's good at finding holes when explicitly told to — it just won't volunteer them, because volunteering them isn't agreeable.
+- **Never ask "is this correct?"** Ask "what input makes this produce wrong output?" The first question invites a yes. The second invites work.
+- **Get suspicious when it agrees fast.** Quick, enthusiastic agreement on something subtle is a signal to dig, not to relax.
+- **Diverge two models.** On a decision that matters, ask two different models and look at where they disagree. The disagreement is where the real question is hiding.
+
+Notice the through-line: the framing of the question shapes the answer more than the model's actual assessment does. No prompt eliminates that. You design the workflow around it.
+
+## When agents hallucinate
+
+Hallucination follows patterns, which makes it manageable. Models invent most when the API changed after their training cutoff, when a task combines libraries in uncommon ways, or when you ask about project-specific conventions they cannot know. The fix isn't avoiding agents for those tasks — it's building the loop so invention surfaces early: ask the model to cite where it learned something, cross-check anything that feels off against real docs, and treat any claim you can't verify as wrong until proven right.
+
+The deepest version of this is to stop relying on the model's word entirely and lean on signals that have no opinion. Tests pass or fail. A build compiles or doesn't. On our codebase I wrote a [static analyzer that proves a localization invariant in CI](/blog/silent-translation-bugs) — it can't be flattered. For things you can't read, like translations, [back-translation](/blog/localization-at-scale) gives you a divergence to measure instead of a reassurance to trust. None of these care whether you want them to pass. That's exactly what makes them useful.
+
+## The meta-skill
+
+All of this rests on one judgment call, repeated a thousand times a day: when to trust the output and when to dig. That call comes from engineering experience — from knowing what "correct" looks like in your context, which is the one thing the model can't supply for you.
+
+Without a loop, a capable agent and a confidently wrong direction move at exactly the same speed, and the agent will agree with you the whole way down. The loop is what turns "fast" into "fast toward the right thing." If you're working out how to make agents reliable on a real team, I'm happy to compare loops — contact links are in the header.

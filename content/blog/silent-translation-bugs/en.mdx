@@ -1,0 +1,60 @@
+---
+title: "The Bug Class You Can't See, and the Tool That Made It Impossible"
+description: "How a whole category of silent localization bugs hid behind a passing build — and why writing a small static analyzer beat fixing them one by one."
+date: "2026-06-11"
+---
+
+The worst bugs aren't the ones that crash. They're the ones nothing reports. A crash has a stack trace, a failing test, an angry log line. A bug that produces *plausible* output has none of that — it just quietly does the wrong thing until a user notices, and often they don't bother to tell you.
+
+This is the story of one such class of bugs on a product that ships in ten languages, and why the right fix wasn't fixing them. It was making them impossible.
+
+## A passing build that was lying
+
+Our localization follows a strict convention: one component owns one translation file. A component imports its own `./locales/ComponentName.po`, and the framework resolves strings from there. Simple, and it scales — until someone breaks the link.
+
+Breaking it is easy. You copy a component to start a new one and forget to repoint the import. You rename a file and miss a call site. You autocomplete the wrong `.po` from a list of near-identical names. Now a component imports *someone else's* translation file.
+
+Here's the part that makes it dangerous: nothing fails. The import resolves — it's a real file. The strings the component asks for simply aren't in it, so the framework falls back to English. The page renders. Types check. Tests pass. The build is green and confident. The only signal in the entire system is a user in Tokyo or São Paulo looking at English text on a screen that was supposed to be in their language — and you will never hear about most of them.
+
+That's not one bug. It's a *class* of bug: invisible by construction, reintroduced by every refactor, and impossible to catch by reading code, because the code looks completely correct.
+
+## The realization: it's a static property
+
+The breakthrough was reframing it. "A file must only import its own locale" isn't a runtime behavior you test — it's a **static property of the source tree**. You don't need to run the app to know it's violated. You can prove it by reading the imports.
+
+The moment a rule is a static property, you stop fixing instances and start writing an analyzer.
+
+So I built one: a script that walks the entire source tree, parses every `.po` import it finds, and checks each one against the convention — does this file import only the locale that matches its own name? It runs in two modes:
+
+```text
+# CI / pre-commit: read-only, fails the build on any violation
+$ check-locale-imports
+
+# Maintenance: auto-repair every broken import in place
+$ check-locale-imports --fix
+```
+
+The `--fix` mode matters as much as the check. A linter that only complains creates work; a linter that repairs removes it. The convention stopped depending on anyone remembering it.
+
+## Wiring it into the place it can't be skipped
+
+A tool that lives on your machine helps you. A tool wired into CI helps everyone, including the version of your teammate who's rushing a Friday deploy. So I put the check in two places:
+
+- The auto-fix runs as part of the string-extraction step, so broken imports get repaired before they can spread.
+- The read-only check runs in lint/CI, so a violation can't merge.
+
+After that, the bug class wasn't "rare." It was *gone* — not because people got more careful, but because being careful was no longer load-bearing.
+
+## How big was the invisible problem?
+
+This is the part I think about most. When I rolled the same tool into a second service, the auto-fix alone rewrote more than 700 lines of wrong imports across 27 files. Seven hundred lines of strings that had been silently falling back to English, in production, with a green build the whole time.
+
+Nobody had reported it. Nobody *could* have — there was no symptom to report. The tool didn't just prevent future bugs; it surfaced the size of a problem that had been completely invisible. I ended up taking the same analyzer across three services, because the convention — and therefore the failure mode — was the same everywhere.
+
+## The lesson worth keeping
+
+The highest-leverage code you write often isn't a feature. It's the thing that converts a recurring class of human mistakes into a machine-checked invariant, once, for everyone, forever. One afternoon of writing an analyzer outperformed any number of careful code reviews, because reviews scale with attention and tooling scales with the codebase.
+
+There's a taste judgment underneath, though, and it's worth being honest about: most things should *not* be automated. A one-off mistake doesn't earn a tool. This one did, and the criteria were specific — the failure was **silent** (no signal to catch it manually), **recurring** (every refactor could reintroduce it), and **cross-cutting** (the same rule held across multiple services). When all three are true, you're not writing a script to save yourself time. You're writing infrastructure that changes what the whole team is capable of doing safely.
+
+Figuring out which problems clear that bar is the part of this work I like most. If you're staring at a class of bugs that your build keeps insisting don't exist, I'm happy to compare notes — contact links are in the header.

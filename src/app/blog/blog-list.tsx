@@ -5,6 +5,7 @@ import { useLocale } from "@/components/locale-provider/locale-provider";
 import type { BlogPost } from "@/lib/mdx";
 import en from "./page.en.json";
 import ru from "./page.ru.json";
+import styles from "./blog-list.module.scss";
 
 const dicts = { en, ru };
 
@@ -19,19 +20,21 @@ export default function BlogList({ enPosts, ruPosts }: BlogListProps) {
   const posts = locale === "ru" ? ruPosts : enPosts;
 
   return (
-    <>
-      <h1>{dict.title}</h1>
-      <ul>
+    <div className={styles.wrapper}>
+      <h1 className={styles.title}>{dict.title}</h1>
+      <ul className={styles.list}>
         {posts.map((post) => (
-          <li key={post.slug}>
-            <Link href={`/blog/${post.slug}`}>
-              <h2>{post.title}</h2>
-              <p>{post.description}</p>
-              <time dateTime={post.date}>{post.date}</time>
+          <li key={post.slug} className={styles.item}>
+            <Link href={`/blog/${post.slug}`} className={styles.link}>
+              <h2 className={styles.postTitle}>{post.title}</h2>
+              <p className={styles.description}>{post.description}</p>
+              <time className={styles.date} dateTime={post.date}>
+                {post.date}
+              </time>
             </Link>
           </li>
         ))}
       </ul>
-    </>
+    </div>
   );
 }

@@ -2,6 +2,7 @@
 
 import { type ReactNode } from "react";
 import { useLocale } from "@/components/locale-provider/locale-provider";
+import styles from "./blog-post-view.module.scss";
 
 interface BlogPostViewProps {
   enContent: ReactNode;
@@ -18,12 +19,14 @@ export default function BlogPostView({ enContent, ruContent, meta }: BlogPostVie
   const { title, date } = meta[locale];
 
   return (
-    <article>
-      <header>
-        <h1>{title}</h1>
-        <time dateTime={date}>{date}</time>
+    <article className={styles.article}>
+      <header className={styles.header}>
+        <h1 className={styles.title}>{title}</h1>
+        <time className={styles.date} dateTime={date}>
+          {date}
+        </time>
       </header>
-      <div>{content}</div>
+      <div className={styles.content}>{content}</div>
     </article>
   );
 }
