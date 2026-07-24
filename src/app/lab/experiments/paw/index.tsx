@@ -34,12 +34,24 @@ interface Fx {
 
 const DIFFICULTY: Record<
   Difficulty,
-  { life: number; spawnMin: number; spawnMax: number; maxOnScreen: number; size: number }
+  { life: number; spawnMin: number; spawnMax: number; maxOnScreen: number }
 > = {
-  easy: { life: 1600, spawnMin: 420, spawnMax: 780, maxOnScreen: 3, size: 64 },
-  normal: { life: 1200, spawnMin: 280, spawnMax: 620, maxOnScreen: 4, size: 56 },
-  hard: { life: 880, spawnMin: 180, spawnMax: 420, maxOnScreen: 5, size: 46 },
+  easy: { life: 1600, spawnMin: 420, spawnMax: 780, maxOnScreen: 3 },
+  normal: { life: 1200, spawnMin: 280, spawnMax: 620, maxOnScreen: 4 },
+  hard: { life: 880, spawnMin: 180, spawnMax: 420, maxOnScreen: 5 },
 };
+
+/** Target diameter by difficulty. Desktop hard ≈ former default; mobile normal ≈ same. */
+const TARGET_SIZE: Record<"desktop" | "mobile", Record<Difficulty, number>> = {
+  desktop: { easy: 80, normal: 68, hard: 56 },
+  mobile: { easy: 66, normal: 56, hard: 48 },
+};
+
+const MOBILE_MQ = "(max-width: 767px)";
+
+function targetSizeFor(d: Difficulty, mobile: boolean): number {
+  return TARGET_SIZE[mobile ? "mobile" : "desktop"][d];
+}
 
 function storageKey(d: Difficulty) {
   return `${STORAGE_PREFIX}${d}`;
@@ -103,6 +115,7 @@ export default function PawRush() {
   const scoreRef = useRef(0);
   const phaseRef = useRef<Phase>("idle");
   const difficultyRef = useRef<Difficulty>("normal");
+  const mobileRef = useRef(false);
   const targetsRef = useRef<Target[]>([]);
   const spawnTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const tickTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -119,6 +132,7 @@ export default function PawRush() {
   const [targets, setTargets] = useState<Target[]>([]);
   const [fx, setFx] = useState<Fx[]>([]);
   const [reduced, setReduced] = useState(prefersReducedMotion);
+  const [mobile, setMobile] = useState(false);
 
   const syncTargets = useCallback((next: Target[] | ((prev: Target[]) => Target[])) => {
     setTargets((prev) => {
@@ -131,6 +145,17 @@ export default function PawRush() {
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     const onChange = () => setReduced(mq.matches);
+    onChange();
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
+  useEffect(() => {
+    const mq = window.matchMedia(MOBILE_MQ);
+    const onChange = () => {
+      mobileRef.current = mq.matches;
+      setMobile(mq.matches);
+    };
     onChange();
     mq.addEventListener("change", onChange);
     return () => mq.removeEventListener("change", onChange);
@@ -207,10 +232,11 @@ export default function PawRush() {
     if (!arena || phaseRef.current !== "playing") return;
 
     const cfg = DIFFICULTY[difficultyRef.current];
+    const size = targetSizeFor(difficultyRef.current, mobileRef.current);
     const alive = targetsRef.current.filter((t) => !t.dying);
     if (alive.length >= cfg.maxOnScreen) return;
 
-    const pos = pickPosition(arena.clientWidth, arena.clientHeight, cfg.size, alive);
+    const pos = pickPosition(arena.clientWidth, arena.clientHeight, size, alive);
     if (!pos) return;
 
     const id = ++idRef.current;
@@ -264,6 +290,20 @@ export default function PawRush() {
 
   useEffect(() => () => clearTimers(), [clearTimers]);
 
+  // While playing, block touchmove on the arena so a slip doesn't scroll the page.
+  // Outside of play (idle/over) leave scrolling alone — the arena isn't always in view.
+  useEffect(() => {
+    const arena = arenaRef.current;
+    if (!arena || phase !== "playing") return;
+
+    const blockScroll = (e: TouchEvent) => {
+      e.preventDefault();
+    };
+
+    arena.addEventListener("touchmove", blockScroll, { passive: false });
+    return () => arena.removeEventListener("touchmove", blockScroll);
+  }, [phase]);
+
   const hit = (target: Target) => {
     if (phaseRef.current !== "playing") return;
     // Allow hits during fade-out — if it's still visible, it should score
@@ -294,7 +334,7 @@ export default function PawRush() {
     }, reduced ? 200 : 560);
   };
 
-  const targetSize = DIFFICULTY[difficulty].size;
+  const targetSize = targetSizeFor(difficulty, mobile);
   const difficulties: Difficulty[] = ["easy", "normal", "hard"];
 
   return (
@@ -332,7 +372,9 @@ export default function PawRush() {
 
       <div
         ref={arenaRef}
-        className={`${shared.arena} ${shared.arenaTall} ${shared.arenaPaw}`}
+        className={`${shared.arena} ${shared.arenaTall} ${shared.arenaPaw} ${
+          phase === "playing" ? shared.arenaPlaying : ""
+        }`}
         data-no-paw
       >
         {targets.map((t) => (

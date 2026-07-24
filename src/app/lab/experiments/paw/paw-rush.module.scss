@@ -1,5 +1,6 @@
 .target {
   --life-ms: 1100ms;
+  --hit-slop: 6px;
   position: absolute;
   border: none;
   border-radius: 50%;
@@ -11,7 +12,14 @@
   animation:
     popIn 160ms ease-out forwards,
     lifePulse var(--life-ms) linear 160ms forwards;
-  touch-action: manipulation;
+  touch-action: none;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: calc(var(--hit-slop) * -1);
+    border-radius: 50%;
+  }
 
   &::after {
     content: "";
@@ -19,6 +27,10 @@
     inset: 26%;
     border-radius: 50%;
     background: rgba(14, 12, 10, 0.18);
+  }
+
+  @media (pointer: coarse) {
+    --hit-slop: 5px;
   }
 }
 
@@ -29,7 +41,6 @@
 }
 
 .dying {
-  /* Still clickable while fading — visibility must match hitability */
   animation: dieOut 220ms ease-in forwards;
 }
 

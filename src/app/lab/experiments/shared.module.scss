@@ -80,6 +80,11 @@
   }
 }
 
+.arenaPlaying {
+  touch-action: none;
+  overscroll-behavior: none;
+}
+
 .arenaTall {
   @media (max-width: $vp-mobile) {
     min-height: 340px;
@@ -92,8 +97,7 @@
   }
 }
 
-/* Same paw mark as CatPaw — fine pointer only */
-$paw-cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 64 64' fill='none'%3E%3Cellipse cx='32' cy='42' rx='12' ry='14' fill='%23ededed'/%3E%3Cellipse cx='20' cy='26' rx='6' ry='8' fill='%23ededed'/%3E%3Cellipse cx='32' cy='22' rx='6' ry='8' fill='%23ededed'/%3E%3Cellipse cx='44' cy='26' rx='6' ry='8' fill='%23ededed'/%3E%3Cellipse cx='32' cy='42' rx='8' ry='9' fill='%23d4a373' opacity='0.6'/%3E%3Cellipse cx='20' cy='26' rx='4' ry='5' fill='%23d4a373' opacity='0.6'/%3E%3Cellipse cx='32' cy='22' rx='4' ry='5' fill='%23d4a373' opacity='0.6'/%3E%3Cellipse cx='44' cy='26' rx='4' ry='5' fill='%23d4a373' opacity='0.6'/%3E%3C/svg%3E") 12 14, pointer;
+$paw-cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2244%22%20height%3D%2244%22%20viewBox%3D%220%200%2064%2064%22%20fill%3D%22none%22%3E%3Cg%20transform%3D%22rotate%28-30%2032%2032%29%22%3E%3Cellipse%20cx%3D%2232%22%20cy%3D%2242%22%20rx%3D%2212%22%20ry%3D%2214%22%20fill%3D%22%23ededed%22%2F%3E%3Cellipse%20cx%3D%2220%22%20cy%3D%2226%22%20rx%3D%226%22%20ry%3D%228%22%20fill%3D%22%23ededed%22%2F%3E%3Cellipse%20cx%3D%2232%22%20cy%3D%2222%22%20rx%3D%226%22%20ry%3D%228%22%20fill%3D%22%23ededed%22%2F%3E%3Cellipse%20cx%3D%2244%22%20cy%3D%2226%22%20rx%3D%226%22%20ry%3D%228%22%20fill%3D%22%23ededed%22%2F%3E%3Cellipse%20cx%3D%2232%22%20cy%3D%2242%22%20rx%3D%228%22%20ry%3D%229%22%20fill%3D%22%23d4a373%22%20opacity%3D%220.6%22%2F%3E%3Cellipse%20cx%3D%2220%22%20cy%3D%2226%22%20rx%3D%224%22%20ry%3D%225%22%20fill%3D%22%23d4a373%22%20opacity%3D%220.6%22%2F%3E%3Cellipse%20cx%3D%2232%22%20cy%3D%2222%22%20rx%3D%224%22%20ry%3D%225%22%20fill%3D%22%23d4a373%22%20opacity%3D%220.6%22%2F%3E%3Cellipse%20cx%3D%2244%22%20cy%3D%2226%22%20rx%3D%224%22%20ry%3D%225%22%20fill%3D%22%23d4a373%22%20opacity%3D%220.6%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") 23 24, pointer;
 
 .arenaPaw {
   cursor: $paw-cursor;
