@@ -6,6 +6,10 @@
   "open": "Open",
   "play": "Play",
   "again": "Play again",
+  "newGame": "New game",
+  "won": "Big hoot!",
+  "continue": "Keep going",
+  "goal": "Peak",
   "score": "Score",
   "best": "Best",
   "combo": "Combo",
@@ -20,6 +24,11 @@
       "title": "Paw Rush",
       "blurb": "Thirty seconds. Hit the targets. Chase the combo.",
       "hint": "Tap or click targets before they fade. Best score is saved per difficulty."
+    },
+    "hoot": {
+      "title": "Hoot Stack",
+      "blurb": "Slide owlets. Merge matching hoots. Chase the big УХУХ.",
+      "hint": "Arrow keys or swipe. Same voices merge into the next. Best score is saved."
     }
   }
 }

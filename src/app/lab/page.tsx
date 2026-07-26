@@ -3,10 +3,10 @@ import LabHub from "./lab-hub";
 
 export const metadata: Metadata = {
   title: "Lab — KeksOwl",
-  description: "Interactive lab — Paw Rush and more experiments to come.",
+  description: "Interactive lab — Paw Rush, Hoot Stack, and small experiments.",
   openGraph: {
     title: "Lab — KeksOwl",
-    description: "Interactive lab. Flagship: Paw Rush.",
+    description: "Interactive lab. Paw Rush and Hoot Stack.",
     url: "https://keksowl.com/lab",
     type: "website",
   },
