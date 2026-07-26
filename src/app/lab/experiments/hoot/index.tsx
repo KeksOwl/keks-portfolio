@@ -171,7 +171,6 @@ export default function HootStack() {
   const flipFromRef = useRef<Map<number, DOMRect> | null>(null);
   const spawnTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const clearTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const touchStart = useRef<{ x: number; y: number } | null>(null);
 
   const [phase, setPhase] = useState<Phase>("idle");
   const [score, setScore] = useState(0);
@@ -347,23 +346,48 @@ export default function HootStack() {
     return () => window.removeEventListener("keydown", onKey);
   }, [applyMove]);
 
+  // Real phones scroll the *page* unless touchmove is canceled on document
+  // (arena-only listeners are flaky once the browser starts a scroll gesture).
   useEffect(() => {
     const arena = arenaRef.current;
     if (!arena || phase !== "playing") return;
 
+    let fingerId: number | null = null;
+    let startX = 0;
+    let startY = 0;
+
     const onStart = (e: TouchEvent) => {
+      if (fingerId != null) return;
       const t = e.changedTouches[0];
       if (!t) return;
-      touchStart.current = { x: t.clientX, y: t.clientY };
+      fingerId = t.identifier;
+      startX = t.clientX;
+      startY = t.clientY;
+    };
+
+    const onMove = (e: TouchEvent) => {
+      if (fingerId == null) return;
+      for (let i = 0; i < e.touches.length; i++) {
+        if (e.touches[i]!.identifier === fingerId) {
+          if (e.cancelable) e.preventDefault();
+          return;
+        }
+      }
     };
 
     const onEnd = (e: TouchEvent) => {
-      const startPt = touchStart.current;
-      touchStart.current = null;
-      const t = e.changedTouches[0];
-      if (!startPt || !t) return;
-      const dx = t.clientX - startPt.x;
-      const dy = t.clientY - startPt.y;
+      if (fingerId == null) return;
+      let t: Touch | undefined;
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        if (e.changedTouches[i]!.identifier === fingerId) {
+          t = e.changedTouches[i];
+          break;
+        }
+      }
+      if (!t) return;
+      const dx = t.clientX - startX;
+      const dy = t.clientY - startY;
+      fingerId = null;
       if (Math.max(Math.abs(dx), Math.abs(dy)) < SWIPE_MIN) return;
       if (Math.abs(dx) > Math.abs(dy)) {
         applyMove(dx > 0 ? "right" : "left");
@@ -372,17 +396,27 @@ export default function HootStack() {
       }
     };
 
-    const blockScroll = (e: TouchEvent) => {
-      e.preventDefault();
+    const onCancel = (e: TouchEvent) => {
+      if (fingerId == null) return;
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        if (e.changedTouches[i]!.identifier === fingerId) {
+          fingerId = null;
+          return;
+        }
+      }
     };
 
     arena.addEventListener("touchstart", onStart, { passive: true });
-    arena.addEventListener("touchend", onEnd, { passive: true });
-    arena.addEventListener("touchmove", blockScroll, { passive: false });
+    // Document-level: keep blocking scroll / finish swipe even if finger leaves the arena.
+    document.addEventListener("touchmove", onMove, { passive: false });
+    document.addEventListener("touchend", onEnd, { passive: true });
+    document.addEventListener("touchcancel", onCancel, { passive: true });
+
     return () => {
       arena.removeEventListener("touchstart", onStart);
-      arena.removeEventListener("touchend", onEnd);
-      arena.removeEventListener("touchmove", blockScroll);
+      document.removeEventListener("touchmove", onMove);
+      document.removeEventListener("touchend", onEnd);
+      document.removeEventListener("touchcancel", onCancel);
     };
   }, [phase, applyMove]);
 

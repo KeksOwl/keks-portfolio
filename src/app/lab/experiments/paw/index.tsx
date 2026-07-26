@@ -290,18 +290,52 @@ export default function PawRush() {
 
   useEffect(() => () => clearTimers(), [clearTimers]);
 
-  // While playing, block touchmove on the arena so a slip doesn't scroll the page.
-  // Outside of play (idle/over) leave scrolling alone — the arena isn't always in view.
+  // While playing, block page scroll if the gesture started on the arena.
+  // Arena-only touchmove is flaky on real phones — lock on document instead.
   useEffect(() => {
     const arena = arenaRef.current;
     if (!arena || phase !== "playing") return;
 
-    const blockScroll = (e: TouchEvent) => {
-      e.preventDefault();
+    let fingerId: number | null = null;
+
+    const onStart = (e: TouchEvent) => {
+      if (fingerId != null) return;
+      const t = e.changedTouches[0];
+      if (!t) return;
+      fingerId = t.identifier;
     };
 
-    arena.addEventListener("touchmove", blockScroll, { passive: false });
-    return () => arena.removeEventListener("touchmove", blockScroll);
+    const onMove = (e: TouchEvent) => {
+      if (fingerId == null) return;
+      for (let i = 0; i < e.touches.length; i++) {
+        if (e.touches[i]!.identifier === fingerId) {
+          if (e.cancelable) e.preventDefault();
+          return;
+        }
+      }
+    };
+
+    const clearFinger = (e: TouchEvent) => {
+      if (fingerId == null) return;
+      for (let i = 0; i < e.changedTouches.length; i++) {
+        if (e.changedTouches[i]!.identifier === fingerId) {
+          fingerId = null;
+          return;
+        }
+      }
+    };
+
+    arena.addEventListener("touchstart", onStart, { passive: true });
+    document.addEventListener("touchmove", onMove, { passive: false });
+    document.addEventListener("touchend", clearFinger, { passive: true });
+    document.addEventListener("touchcancel", clearFinger, { passive: true });
+
+    return () => {
+      arena.removeEventListener("touchstart", onStart);
+      document.removeEventListener("touchmove", onMove);
+      document.removeEventListener("touchend", clearFinger);
+      document.removeEventListener("touchcancel", clearFinger);
+    };
   }, [phase]);
 
   const hit = (target: Target) => {
