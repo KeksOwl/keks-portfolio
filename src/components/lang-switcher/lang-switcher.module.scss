@@ -4,12 +4,17 @@
   flex-flow: row nowrap;
   align-items: stretch;
   font-size: 13px;
+  font-family: inherit;
   letter-spacing: $text-spacing-5;
   text-transform: uppercase;
   border: 1px solid $color-border-subtle;
   border-radius: 8px;
   overflow: hidden;
   transition: $trans-3;
+  cursor: pointer;
+  color: inherit;
+  background: transparent;
+  padding: 0;
 
   &::before {
     position: absolute;
@@ -26,6 +31,10 @@
 
   &:hover {
     border-color: $color-accent;
+
+    .option:not(.active) {
+      color: $color-accent;
+    }
   }
 }
 
@@ -38,37 +47,24 @@
   background-color: $color-accent-glow;
   transform: skewX(-15deg);
   transition: transform $trans-3 ease;
+  pointer-events: none;
 }
 
 .indicatorRight {
   transform: translateX(100%) skewX(-15deg);
 }
 
-.btn {
+.option {
   position: relative;
   z-index: 1;
   min-width: 44px;
   padding: 8px 0;
   text-align: center;
-  font-size: inherit;
-  font-family: inherit;
-  letter-spacing: inherit;
-  text-transform: inherit;
   color: $color-fg-secondary;
   transition: $trans-3;
-  cursor: pointer;
-
-  &:hover {
-    color: $color-accent;
-  }
 }
 
 .active {
   font-weight: 700;
   color: $color-fg;
-  cursor: default;
-
-  &:hover {
-    color: $color-fg;
-  }
 }

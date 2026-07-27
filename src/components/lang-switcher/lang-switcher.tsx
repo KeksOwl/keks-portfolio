@@ -1,28 +1,28 @@
 "use client";
 
-import { useLocale } from "@/components/locale-provider/locale-provider";
+import { useLocale, type Locale } from "@/components/locale-provider/locale-provider";
 import styles from "./lang-switcher.module.scss";
+
+const labels: Record<Locale, string> = {
+  en: "Switch language to Russian",
+  ru: "Переключить язык на английский",
+};
 
 export default function LangSwitcher() {
   const { locale, setLocale } = useLocale();
+  const nextLocale: Locale = locale === "en" ? "ru" : "en";
 
   return (
-    <div className={styles.switcher} data-paw-target>
+    <button
+      type="button"
+      className={styles.switcher}
+      onClick={() => setLocale(nextLocale)}
+      aria-label={labels[locale]}
+      data-paw-target
+    >
       <span className={`${styles.indicator} ${locale === "ru" ? styles.indicatorRight : ""}`} aria-hidden="true" />
-      <button
-        className={`${styles.btn} ${locale === "en" ? styles.active : ""}`}
-        onClick={() => setLocale("en")}
-        aria-pressed={locale === "en"}
-      >
-        EN
-      </button>
-      <button
-        className={`${styles.btn} ${locale === "ru" ? styles.active : ""}`}
-        onClick={() => setLocale("ru")}
-        aria-pressed={locale === "ru"}
-      >
-        RU
-      </button>
-    </div>
+      <span className={`${styles.option} ${locale === "en" ? styles.active : ""}`}>EN</span>
+      <span className={`${styles.option} ${locale === "ru" ? styles.active : ""}`}>RU</span>
+    </button>
   );
 }
