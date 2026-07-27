@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useLocale } from "@/components/locale-provider/locale-provider";
 import shared from "../shared.module.scss";
+import { useLeaveConfirm } from "../use-leave-confirm";
 import styles from "./hoot-stack.module.scss";
 import en from "../../lab.en.json";
 import ru from "../../lab.ru.json";
@@ -43,7 +44,7 @@ const STAGE_LABELS_EN = [
   "elder",
   "horned",
   "night",
-  "УХУХ",
+  "HOOT!",
 ] as const;
 
 const STAGE_LABELS_RU = [
@@ -178,6 +179,8 @@ export default function HootStack() {
   const [tiles, setTiles] = useState<TrackedTile[]>([]);
   const [reduced, setReduced] = useState(prefersReducedMotion);
   const [goalPeak, setGoalPeak] = useState(0);
+
+  useLeaveConfirm(phase === "playing", dict.leaveConfirm);
 
   const syncTiles = useCallback((next: TrackedTile[]) => {
     tilesRef.current = next;

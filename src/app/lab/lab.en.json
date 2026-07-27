@@ -15,6 +15,7 @@
   "combo": "Combo",
   "time": "Time",
   "ready": "Ready when you are",
+  "leaveConfirm": "Leave the game? Your current run will be lost.",
   "difficulty": "Difficulty",
   "easy": "Easy",
   "normal": "Normal",
@@ -27,7 +28,7 @@
     },
     "hoot": {
       "title": "Hoot Stack",
-      "blurb": "Slide owlets. Merge matching hoots. Chase the big УХУХ.",
+      "blurb": "Slide owlets. Merge matching hoots. Chase the big HOOT.",
       "hint": "Arrow keys or swipe. Same voices merge into the next. Best score is saved."
     }
   }

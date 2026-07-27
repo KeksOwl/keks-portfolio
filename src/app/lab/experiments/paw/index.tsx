@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocale } from "@/components/locale-provider/locale-provider";
 import shared from "../shared.module.scss";
+import { useLeaveConfirm } from "../use-leave-confirm";
 import styles from "./paw-rush.module.scss";
 import en from "../../lab.en.json";
 import ru from "../../lab.ru.json";
@@ -133,6 +134,8 @@ export default function PawRush() {
   const [fx, setFx] = useState<Fx[]>([]);
   const [reduced, setReduced] = useState(prefersReducedMotion);
   const [mobile, setMobile] = useState(false);
+
+  useLeaveConfirm(phase === "playing", dict.leaveConfirm);
 
   const syncTargets = useCallback((next: Target[] | ((prev: Target[]) => Target[])) => {
     setTargets((prev) => {
