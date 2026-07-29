@@ -41,6 +41,13 @@ export default function LabHub() {
                 <span className={styles.cta}>{dict.open} →</span>
               </Link>
             </li>
+            <li>
+              <Link href="/lab/crumb" className={styles.gameLink}>
+                <h3 className={styles.gameTitle}>{dict.experiments.crumb.title}</h3>
+                <p className={styles.gameBlurb}>{dict.experiments.crumb.blurb}</p>
+                <span className={styles.cta}>{dict.open} →</span>
+              </Link>
+            </li>
           </ul>
         </section>
       </Reveal>

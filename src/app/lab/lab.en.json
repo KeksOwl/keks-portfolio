@@ -14,6 +14,7 @@
   "best": "Best",
   "combo": "Combo",
   "time": "Time",
+  "moves": "Moves",
   "ready": "Ready when you are",
   "leaveConfirm": "Leave the game? Your current run will be lost.",
   "difficulty": "Difficulty",
@@ -30,6 +31,11 @@
       "title": "Hoot Stack",
       "blurb": "Slide owlets. Merge matching hoots. Chase the big HOOT.",
       "hint": "Arrow keys or swipe. Same voices merge into the next. Best score is saved."
+    },
+    "crumb": {
+      "title": "Crumb Match",
+      "blurb": "Swap cupcakes. Line up three. Chain the cascades.",
+      "hint": "Tap a cupcake then a neighbour, or swipe to swap. Matches of 3+ clear and cascade. 25 moves — best score is saved."
     }
   }
 }

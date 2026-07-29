@@ -1,0 +1,249 @@
+$cols: 7;
+$gap: 6px; // keep in sync with GAP in logic.ts
+
+.stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 12px 10px;
+  box-sizing: border-box;
+  touch-action: none;
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.boardWrap {
+  position: relative;
+  width: min(100%, 460px);
+  aspect-ratio: 1;
+  padding: 8px;
+  box-sizing: border-box;
+  touch-action: none;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat($cols, 1fr);
+  grid-template-rows: repeat($cols, 1fr);
+  gap: $gap;
+  width: 100%;
+  height: 100%;
+}
+
+.slot {
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.035);
+}
+
+.tileLayer {
+  position: absolute;
+  inset: 8px;
+  pointer-events: auto;
+}
+
+/*
+  left/top jump instantly; the slide/fall is done with Web Animations (FLIP) in JS,
+  mirroring Hoot Stack. That avoids CSS-transition quirks during cascades.
+*/
+.tile {
+  position: absolute;
+  z-index: 2;
+  box-sizing: border-box;
+  pointer-events: auto;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.tileClearing {
+  z-index: 1;
+  pointer-events: none;
+  animation: crumbClear 150ms ease-in forwards;
+}
+
+.face {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 9px;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  transition: border-color 120ms ease, background-color 120ms ease;
+}
+
+.faceSelected {
+  border-color: rgba(225, 172, 110, 0.85);
+  background: rgba(225, 172, 110, 0.14);
+}
+
+/* --- Cupcake art ------------------------------------------------------ */
+
+.cupcake {
+  position: relative;
+  width: 88%;
+  height: 92%;
+
+  // frosting cap
+  &::before {
+    content: "";
+    position: absolute;
+    left: 5%;
+    right: 5%;
+    top: 0;
+    height: 56%;
+    background: var(--frost);
+    border-radius: 50% 50% 40% 40% / 64% 64% 40% 40%;
+    box-shadow: inset 0 3px 0 rgba(255, 255, 255, 0.22);
+  }
+
+  // liner base
+  &::after {
+    content: "";
+    position: absolute;
+    left: 15%;
+    right: 15%;
+    bottom: 0;
+    height: 46%;
+    background: linear-gradient(90deg, #c39a63 0%, #ab7f4a 100%);
+    clip-path: polygon(4% 0, 96% 0, 84% 100%, 16% 100%);
+    border-radius: 0 0 3px 3px;
+  }
+}
+
+.topping {
+  position: absolute;
+  top: 6%;
+  left: 50%;
+  z-index: 1;
+  width: 30%;
+  height: 30%;
+  transform: translateX(-50%);
+  background: var(--top);
+}
+
+/*
+  Each flavour pairs a distinct hue with a distinct topping shape, so the board
+  stays readable without relying on colour alone.
+*/
+.k0 {
+  --frost: #6d4a2e;
+  --top: #ecdcc6;
+
+  .topping {
+    border-radius: 50%; // chocolate: cream pearl
+  }
+}
+
+.k1 {
+  --frost: #b5487a;
+  --top: #ffd8e6;
+
+  .topping {
+    // berry: heart (percentage polygon so it scales with the tile)
+    clip-path: polygon(
+      50% 100%,
+      14% 56%,
+      0% 30%,
+      10% 8%,
+      32% 8%,
+      50% 28%,
+      68% 8%,
+      90% 8%,
+      100% 30%,
+      86% 56%
+    );
+  }
+}
+
+.k2 {
+  --frost: #dcb133;
+  --top: #fff3c4;
+
+  .topping {
+    clip-path: polygon(
+      50% 0%,
+      61% 35%,
+      98% 35%,
+      68% 57%,
+      79% 91%,
+      50% 70%,
+      21% 91%,
+      32% 57%,
+      2% 35%,
+      39% 35%
+    ); // lemon: star
+  }
+}
+
+.k3 {
+  --frost: #d1832f;
+  --top: #ffe4c0;
+
+  .topping {
+    clip-path: polygon(50% 0%, 100% 100%, 0% 100%); // caramel: triangle
+  }
+}
+
+.k4 {
+  --frost: #4f9d86;
+  --top: #dcf4ec;
+
+  .topping {
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); // mint: diamond
+  }
+}
+
+/* --- Animations ------------------------------------------------------- */
+
+@keyframes crumbClear {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  40% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+}
+
+@media (max-width: $vp-mobile) {
+  .stage {
+    padding: 8px 4px;
+  }
+
+  .boardWrap {
+    width: 100%;
+    padding: 5px;
+  }
+
+  .tileLayer {
+    inset: 5px;
+  }
+
+  .face,
+  .slot {
+    border-radius: 7px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tileClearing {
+    animation: none;
+  }
+
+  .face {
+    transition: none;
+  }
+}
