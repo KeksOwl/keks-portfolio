@@ -68,6 +68,7 @@
 }
 
 .padBtn {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -82,6 +83,13 @@
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
+
+  /* Invisible hit padding — easier to press mid-run without growing the chrome. */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -8px;
+  }
 
   &:active:not(:disabled) {
     background: rgba(225, 172, 110, 0.22);

@@ -11,9 +11,9 @@ export type Difficulty = "easy" | "normal" | "hard";
 
 /** Base tick / floor / per-food speed-up. Higher ms = slower. */
 const TICK: Record<Difficulty, { base: number; floor: number; ramp: number }> = {
-  easy: { base: 280, floor: 150, ramp: 3 },
-  normal: { base: 185, floor: 82, ramp: 5 },
-  hard: { base: 148, floor: 60, ramp: 5.5 },
+  easy: { base: 320, floor: 175, ramp: 2.5 },
+  normal: { base: 220, floor: 100, ramp: 4 },
+  hard: { base: 175, floor: 75, ramp: 5 },
 };
 
 export interface Point {
