@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocale } from "@/components/locale-provider/locale-provider";
 import shared from "../shared.module.scss";
 import { useLeaveConfirm } from "../use-leave-confirm";
+import { useRestartKey } from "../use-restart-key";
 import styles from "./paw-rush.module.scss";
 import en from "../../lab.en.json";
 import ru from "../../lab.ru.json";
@@ -291,6 +292,8 @@ export default function PawRush() {
     scheduleSpawn();
   }, [clearTimers, difficulty, finish, spawnTarget, syncTargets]);
 
+  useRestartKey(phase === "over", start);
+
   useEffect(() => () => clearTimers(), [clearTimers]);
 
   // While playing, block page scroll if the gesture started on the arena.
@@ -457,6 +460,7 @@ export default function PawRush() {
             <button type="button" className={shared.playBtn} onClick={start}>
               {phase === "idle" ? dict.play : dict.again}
             </button>
+            {phase === "over" && <p className={shared.keyHint}>{dict.againKey}</p>}
           </div>
         )}
       </div>

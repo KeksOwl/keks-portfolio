@@ -1,4 +1,4 @@
-export const EXPERIMENT_SLUGS = ["paw", "hoot", "crumb"] as const;
+export const EXPERIMENT_SLUGS = ["paw", "hoot", "crumb", "trail"] as const;
 
 export type ExperimentSlug = (typeof EXPERIMENT_SLUGS)[number];
 
@@ -12,6 +12,7 @@ export const EXPERIMENTS: ExperimentMeta[] = [
   { slug: "paw", sticky: true, ready: true },
   { slug: "hoot", ready: true },
   { slug: "crumb", ready: true },
+  { slug: "trail", ready: true },
 ];
 
 export function isExperimentSlug(value: string): value is ExperimentSlug {

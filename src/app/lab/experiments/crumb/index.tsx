@@ -4,6 +4,7 @@ import { memo, useCallback, useEffect, useLayoutEffect, useRef, useState } from 
 import { useLocale } from "@/components/locale-provider/locale-provider";
 import shared from "../shared.module.scss";
 import { useLeaveConfirm } from "../use-leave-confirm";
+import { useRestartKey } from "../use-restart-key";
 import styles from "./crumb-match.module.scss";
 import en from "../../lab.en.json";
 import ru from "../../lab.ru.json";
@@ -414,6 +415,8 @@ export default function CrumbMatch() {
     setPhase("playing");
   }, [clearTimers, nextId, setSelectedIndex, syncTiles]);
 
+  useRestartKey(phase === "over", startGame);
+
   // Single delegated press handler for the whole board (one listener, memo-friendly tiles).
   const onBoardPointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     if (phaseRef.current !== "playing" || busyRef.current) return;
@@ -585,6 +588,7 @@ export default function CrumbMatch() {
                 <button type="button" className={shared.playBtn} onClick={startGame}>
                   {dict.again}
                 </button>
+                <p className={shared.keyHint}>{dict.againKey}</p>
               </>
             )}
           </div>

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import { useLocale } from "@/components/locale-provider/locale-provider";
 import shared from "../shared.module.scss";
 import { useLeaveConfirm } from "../use-leave-confirm";
+import { useRestartKey } from "../use-restart-key";
 import styles from "./hoot-stack.module.scss";
 import en from "../../lab.en.json";
 import ru from "../../lab.ru.json";
@@ -283,6 +284,8 @@ export default function HootStack() {
     clearAnimFlags();
   }, [clearAnimFlags, syncTiles]);
 
+  useRestartKey(phase === "over" || phase === "won", startGame);
+
   const continueAfterWin = useCallback(() => {
     phaseRef.current = "playing";
     setPhase("playing");
@@ -537,6 +540,7 @@ export default function HootStack() {
                     {dict.newGame}
                   </button>
                 </div>
+                <p className={shared.keyHint}>{dict.againKey}</p>
               </>
             )}
             {phase === "over" && (
@@ -550,6 +554,7 @@ export default function HootStack() {
                 <button type="button" className={shared.playBtn} onClick={startGame}>
                   {dict.again}
                 </button>
+                <p className={shared.keyHint}>{dict.againKey}</p>
               </>
             )}
           </div>

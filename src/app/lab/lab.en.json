@@ -6,6 +6,7 @@
   "open": "Open",
   "play": "Play",
   "again": "Play again",
+  "againKey": "R — play again",
   "newGame": "New game",
   "won": "Big hoot!",
   "continue": "Keep going",
@@ -21,6 +22,10 @@
   "easy": "Easy",
   "normal": "Normal",
   "hard": "Hard",
+  "hero": "Hero",
+  "owl": "Owl",
+  "cat": "Cat",
+  "keks": "Cupcake",
   "experiments": {
     "paw": {
       "title": "Paw Rush",
@@ -36,6 +41,13 @@
       "title": "Crumb Match",
       "blurb": "Swap cupcakes. Line up three. Chain the cascades.",
       "hint": "Tap a cupcake then a neighbour, or swipe to swap. Matches of 3+ clear and cascade. 25 moves — best score is saved."
+    },
+    "trail": {
+      "title": "Trail Tail",
+      "blurb": "Pick a hero. Eat crumbs. Don't bite your tail.",
+      "hint": "Arrow keys, WASD, or swipe. Walls and yourself end the run. Best score is saved per hero.",
+      "length": "Length",
+      "cleared": "Board clear!"
     }
   }
 }
