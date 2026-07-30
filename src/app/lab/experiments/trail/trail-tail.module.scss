@@ -1,17 +1,43 @@
+/* Phone: one self-contained block (board + pad) that fits the viewport. */
+.arenaTrail {
+  @media (max-width: $vp-mobile) {
+    min-height: 380px;
+    height: min(62dvh, calc(100dvh - 200px));
+    max-height: calc(100dvh - 180px);
+  }
+
+  @media (max-width: $vp-550) {
+    min-height: 360px;
+    height: min(60dvh, calc(100dvh - 190px));
+  }
+}
+
 .stage {
   position: relative;
   z-index: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 0;
   width: 100%;
   height: 100%;
+  min-height: 0;
   padding: 14px 12px;
   box-sizing: border-box;
   touch-action: none;
   overscroll-behavior: none;
   -webkit-user-select: none;
   user-select: none;
+}
+
+.boardSlot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 0;
+  flex: 0 1 auto;
 }
 
 .board {
@@ -27,6 +53,65 @@
   border: 1px solid rgba(255, 255, 255, 0.05);
   touch-action: none;
   overflow: hidden;
+}
+
+.pad {
+  display: none;
+  flex-shrink: 0;
+  grid-template-columns: repeat(3, 48px);
+  grid-template-rows: repeat(3, 44px);
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  touch-action: manipulation;
+}
+
+.padBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(225, 172, 110, 0.28);
+  background: rgba(225, 172, 110, 0.1);
+  color: $color-accent;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+
+  &:active:not(:disabled) {
+    background: rgba(225, 172, 110, 0.22);
+    border-color: rgba(225, 172, 110, 0.5);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+}
+
+.padUp {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.padLeft {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.padRight {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.padDown {
+  grid-column: 2;
+  grid-row: 3;
 }
 
 .cell {
@@ -174,34 +259,55 @@
 
 @media (max-width: $vp-mobile) {
   .stage {
-    padding: 8px 4px;
+    padding: 6px 4px 8px;
+    justify-content: flex-start;
+    gap: 8px;
+  }
+
+  .boardSlot {
+    flex: 1 1 auto;
+    container-type: size;
   }
 
   .board {
-    width: 100%;
-    max-width: none;
+    /* True square from the shorter side of the remaining slot. */
+    width: min(100cqw, 100cqh);
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 1;
     gap: 3px;
-    padding: 6px;
+    padding: 5px;
     border-radius: 10px;
   }
 
+  .pad {
+    display: grid;
+  }
+
   .cell {
-    border-radius: 4px;
+    border-radius: 5px;
   }
 
   .crumb {
-    width: 64%;
-    height: 64%;
+    width: 66%;
+    height: 66%;
   }
 }
 
 @media (max-width: $vp-550) {
   .stage {
-    padding: 6px 2px;
+    padding: 4px 2px 6px;
+    gap: 6px;
   }
 
   .board {
     gap: 2.5px;
-    padding: 5px;
+    padding: 4px;
+  }
+
+  .pad {
+    grid-template-columns: repeat(3, 46px);
+    grid-template-rows: repeat(3, 42px);
+    gap: 4px;
   }
 }

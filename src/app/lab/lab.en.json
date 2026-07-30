@@ -45,9 +45,14 @@
     "trail": {
       "title": "Trail Tail",
       "blurb": "Pick a hero. Eat crumbs. Don't bite your tail.",
-      "hint": "Arrow keys, WASD, or swipe. Walls and yourself end the run. Best score is saved per hero.",
+      "hint": "Arrow keys, WASD, on-screen arrows, or swipe. Walls and yourself end the run. Best score is saved per difficulty.",
       "length": "Length",
-      "cleared": "Board clear!"
+      "cleared": "Board clear!",
+      "pad": "Direction pad",
+      "up": "Up",
+      "down": "Down",
+      "left": "Left",
+      "right": "Right"
     }
   }
 }

@@ -1,12 +1,20 @@
 /** Desktop board; phones use the smaller size so cells stay readable. */
-export const SIZE_DESKTOP = 14;
-export const SIZE_MOBILE = 10;
+export const SIZE_DESKTOP = 12;
+export const SIZE_MOBILE = 8;
 
 export const START_LENGTH = 3;
 export const MOBILE_MQ = "(max-width: 767px)";
 
 export type Dir = "up" | "down" | "left" | "right";
 export type Hero = "owl" | "cat" | "keks";
+export type Difficulty = "easy" | "normal" | "hard";
+
+/** Base tick / floor / per-food speed-up. Higher ms = slower. */
+const TICK: Record<Difficulty, { base: number; floor: number; ramp: number }> = {
+  easy: { base: 280, floor: 150, ramp: 3 },
+  normal: { base: 185, floor: 82, ramp: 5 },
+  hard: { base: 148, floor: 60, ramp: 5.5 },
+};
 
 export interface Point {
   x: number;
@@ -117,10 +125,11 @@ export function foodScore(length: number): number {
   return 10 + Math.max(0, length - START_LENGTH) * 2;
 }
 
-/** Tick interval: starts calm, ramps as the snake grows. */
-export function tickMsForLength(length: number): number {
+/** Tick interval: starts calm, ramps as the snake grows; paced by difficulty. */
+export function tickMsForLength(length: number, difficulty: Difficulty = "normal"): number {
+  const cfg = TICK[difficulty];
   const gained = Math.max(0, length - START_LENGTH);
-  return Math.max(72, 168 - gained * 5);
+  return Math.max(cfg.floor, cfg.base - gained * cfg.ramp);
 }
 
 export function createStartState(

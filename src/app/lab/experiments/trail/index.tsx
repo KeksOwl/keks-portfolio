@@ -11,6 +11,7 @@ import ru from "../../lab.ru.json";
 import {
   MOBILE_MQ,
   START_LENGTH,
+  type Difficulty,
   type Dir,
   type Hero,
   type TrailState,
@@ -24,8 +25,10 @@ import {
 
 const dicts = { en, ru };
 const HERO_KEY = "lab-trail-hero";
+const DIFFICULTY_KEY = "lab-trail-difficulty";
 const STORAGE_PREFIX = "lab-trail-best:";
 const SWIPE_MIN = 24;
+const DIFFICULTIES: Difficulty[] = ["easy", "normal", "hard"];
 
 function isMobileViewport(): boolean {
   if (typeof window === "undefined") return false;
@@ -148,23 +151,45 @@ function writeHero(hero: Hero) {
   }
 }
 
-function storageKey(hero: Hero) {
-  return `${STORAGE_PREFIX}${hero}`;
+function isDifficulty(value: string | null): value is Difficulty {
+  return value === "easy" || value === "normal" || value === "hard";
 }
 
-function readBest(hero: Hero): number {
+function readDifficulty(): Difficulty {
+  if (typeof window === "undefined") return "normal";
+  try {
+    const raw = localStorage.getItem(DIFFICULTY_KEY);
+    return isDifficulty(raw) ? raw : "normal";
+  } catch {
+    return "normal";
+  }
+}
+
+function writeDifficulty(difficulty: Difficulty) {
+  try {
+    localStorage.setItem(DIFFICULTY_KEY, difficulty);
+  } catch {
+    // ignore
+  }
+}
+
+function storageKey(difficulty: Difficulty) {
+  return `${STORAGE_PREFIX}${difficulty}`;
+}
+
+function readBest(difficulty: Difficulty): number {
   if (typeof window === "undefined") return 0;
   try {
-    const n = Number(localStorage.getItem(storageKey(hero)) ?? 0);
+    const n = Number(localStorage.getItem(storageKey(difficulty)) ?? 0);
     return Number.isFinite(n) ? n : 0;
   } catch {
     return 0;
   }
 }
 
-function writeBest(hero: Hero, score: number) {
+function writeBest(difficulty: Difficulty, score: number) {
   try {
-    localStorage.setItem(storageKey(hero), String(score));
+    localStorage.setItem(storageKey(difficulty), String(score));
   } catch {
     // ignore
   }
@@ -199,19 +224,22 @@ export default function TrailTail() {
   const dict = dicts[locale];
   const copy = dict.experiments.trail;
   const arenaRef = useRef<HTMLDivElement>(null);
+  const boardRef = useRef<HTMLDivElement>(null);
   const phaseRef = useRef<Phase>("idle");
   const stateRef = useRef<TrailState | null>(null);
   const heroRef = useRef<Hero>(readHero());
+  const difficultyRef = useRef<Difficulty>(readDifficulty());
   const mobileRef = useRef(isMobileViewport());
   const tickTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pausedRef = useRef(false);
 
   const [phase, setPhase] = useState<Phase>("idle");
   const [hero, setHero] = useState<Hero>(readHero);
+  const [difficulty, setDifficulty] = useState<Difficulty>(readDifficulty);
   const [state, setState] = useState<TrailState>(() =>
     createStartState(boardSizeFor(isMobileViewport())),
   );
-  const [best, setBest] = useState(() => readBest(readHero()));
+  const [best, setBest] = useState(() => readBest(readDifficulty()));
   const [reduced, setReduced] = useState(prefersReducedMotion);
 
   useLeaveConfirm(phase === "playing", dict.leaveConfirm);
@@ -228,10 +256,10 @@ export default function TrailTail() {
     }
   }, []);
 
-  const persistBest = useCallback((nextScore: number, forHero: Hero) => {
+  const persistBest = useCallback((nextScore: number, forDifficulty: Difficulty) => {
     setBest((prev) => {
       if (nextScore <= prev) return prev;
-      writeBest(forHero, nextScore);
+      writeBest(forDifficulty, nextScore);
       return nextScore;
     });
   }, []);
@@ -241,7 +269,7 @@ export default function TrailTail() {
       clearTick();
       phaseRef.current = result;
       setPhase(result);
-      persistBest(next.score, heroRef.current);
+      persistBest(next.score, difficultyRef.current);
     },
     [clearTick, persistBest],
   );
@@ -251,7 +279,9 @@ export default function TrailTail() {
 
     const arm = () => {
       const length = stateRef.current?.snake.length ?? START_LENGTH;
-      const delay = pausedRef.current ? 120 : tickMsForLength(length);
+      const delay = pausedRef.current
+        ? 120
+        : tickMsForLength(length, difficultyRef.current);
       tickTimerRef.current = setTimeout(() => {
         tickTimerRef.current = null;
         if (phaseRef.current !== "playing") return;
@@ -283,28 +313,35 @@ export default function TrailTail() {
   const startGame = useCallback(() => {
     clearTick();
     pausedRef.current = false;
+    difficultyRef.current = difficulty;
     const next = freshBoard();
     syncState(next);
     phaseRef.current = "playing";
     setPhase("playing");
     scheduleTick();
-  }, [clearTick, freshBoard, scheduleTick, syncState]);
+  }, [clearTick, difficulty, freshBoard, scheduleTick, syncState]);
 
   useRestartKey(phase === "over" || phase === "won", startGame);
 
   const selectHero = useCallback(
     (next: Hero) => {
       if (phaseRef.current === "playing") return;
-      clearTick();
       heroRef.current = next;
       setHero(next);
       writeHero(next);
-      setBest(readBest(next));
-      syncState(freshBoard());
-      phaseRef.current = "idle";
-      setPhase("idle");
     },
-    [clearTick, freshBoard, syncState],
+    [],
+  );
+
+  const selectDifficulty = useCallback(
+    (next: Difficulty) => {
+      if (phaseRef.current === "playing") return;
+      difficultyRef.current = next;
+      setDifficulty(next);
+      writeDifficulty(next);
+      setBest(readBest(next));
+    },
+    [],
   );
 
   useEffect(() => {
@@ -338,6 +375,16 @@ export default function TrailTail() {
     return () => document.removeEventListener("visibilitychange", onVis);
   }, []);
 
+  const steer = useCallback(
+    (dir: Dir) => {
+      if (phaseRef.current !== "playing") return;
+      const cur = stateRef.current;
+      if (!cur) return;
+      syncState(queueDir(cur, dir));
+    },
+    [syncState],
+  );
+
   // Keyboard
   useEffect(() => {
     if (phase !== "playing") return;
@@ -346,19 +393,17 @@ export default function TrailTail() {
       const dir = keyToDir(e.code);
       if (!dir) return;
       e.preventDefault();
-      const cur = stateRef.current;
-      if (!cur) return;
-      syncState(queueDir(cur, dir));
+      steer(dir);
     };
 
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [phase, syncState]);
+  }, [phase, steer]);
 
-  // Swipe + scroll lock while playing (same pattern as Hoot)
+  // Swipe on the board only (pad buttons handle their own taps)
   useEffect(() => {
-    const arena = arenaRef.current;
-    if (!arena || phase !== "playing") return;
+    const board = boardRef.current;
+    if (!board || phase !== "playing") return;
 
     let fingerId: number | null = null;
     let startX = 0;
@@ -401,9 +446,7 @@ export default function TrailTail() {
 
       const dir: Dir =
         Math.abs(dx) >= Math.abs(dy) ? (dx > 0 ? "right" : "left") : dy > 0 ? "down" : "up";
-      const cur = stateRef.current;
-      if (!cur) return;
-      syncState(queueDir(cur, dir));
+      steer(dir);
     };
 
     const onCancel = (e: TouchEvent) => {
@@ -416,18 +459,18 @@ export default function TrailTail() {
       }
     };
 
-    arena.addEventListener("touchstart", onStart, { passive: true });
+    board.addEventListener("touchstart", onStart, { passive: true });
     document.addEventListener("touchmove", onMove, { passive: false });
     document.addEventListener("touchend", onEnd, { passive: true });
     document.addEventListener("touchcancel", onCancel, { passive: true });
 
     return () => {
-      arena.removeEventListener("touchstart", onStart);
+      board.removeEventListener("touchstart", onStart);
       document.removeEventListener("touchmove", onMove);
       document.removeEventListener("touchend", onEnd);
       document.removeEventListener("touchcancel", onCancel);
     };
-  }, [phase, syncState]);
+  }, [phase, steer]);
 
   const boardSize = state.size;
   const cellTotal = boardSize * boardSize;
@@ -454,6 +497,21 @@ export default function TrailTail() {
             {dict[h]}
           </button>
         ))}
+      </div>
+
+      <div className={shared.toolbar}>
+        <span className={shared.toolLabel}>{dict.difficulty}</span>
+        {DIFFICULTIES.map((d) => (
+          <button
+            key={d}
+            type="button"
+            className={`${shared.toolBtn} ${difficulty === d ? shared.toolBtnActive : ""}`}
+            disabled={phase === "playing"}
+            onClick={() => selectDifficulty(d)}
+          >
+            {dict[d]}
+          </button>
+        ))}
         <button
           type="button"
           className={`${shared.toolBtn} ${styles.toolbarEnd}`}
@@ -478,67 +536,96 @@ export default function TrailTail() {
 
       <div
         ref={arenaRef}
-        className={`${shared.arena} ${shared.arenaTall} ${
+        className={`${shared.arena} ${styles.arenaTrail} ${
           phase === "playing" ? shared.arenaPlaying : ""
         }`}
         data-no-paw
       >
         <div className={styles.stage}>
-          <div
-            className={styles.board}
-            role="img"
-            aria-label={`${copy.title}: ${dict.score} ${score}`}
-            style={{
-              gridTemplateColumns: `repeat(${boardSize}, 1fr)`,
-              gridTemplateRows: `repeat(${boardSize}, 1fr)`,
-            }}
-          >
-            {Array.from({ length: cellTotal }, (_, i) => {
-              const x = i % boardSize;
-              const y = Math.floor(i / boardSize);
-              const key = `${x},${y}`;
-              const seg = snakeMap.get(key);
-              const isHead = seg === 0;
-              const isBody = seg != null && seg > 0;
-              const isFood = key === foodKey && !isHead;
-              const fade = isBody ? 1 - seg / Math.max(1, state.snake.length - 1) : 1;
+          <div className={styles.boardSlot}>
+            <div
+              ref={boardRef}
+              className={styles.board}
+              role="img"
+              aria-label={`${copy.title}: ${dict.score} ${score}`}
+              style={{
+                gridTemplateColumns: `repeat(${boardSize}, 1fr)`,
+                gridTemplateRows: `repeat(${boardSize}, 1fr)`,
+              }}
+            >
+              {Array.from({ length: cellTotal }, (_, i) => {
+                const x = i % boardSize;
+                const y = Math.floor(i / boardSize);
+                const key = `${x},${y}`;
+                const seg = snakeMap.get(key);
+                const isHead = seg === 0;
+                const isBody = seg != null && seg > 0;
+                const isFood = key === foodKey && !isHead;
+                const fade = isBody ? 1 - seg / Math.max(1, state.snake.length - 1) : 1;
 
-              return (
-                <div
-                  key={i}
-                  className={[
-                    styles.cell,
-                    isHead || isBody ? styles.body : "",
-                    isHead || isBody ? BODY_CLASS[hero] : "",
-                    isHead ? styles.head : "",
-                    isFood ? styles.food : "",
-                  ]
-                    .filter(Boolean)
-                    .join(" ")}
-                  style={
-                    isBody || isHead
-                      ? ({ ["--trail-fade"]: fade } as CSSProperties)
-                      : undefined
-                  }
-                >
-                  {isHead && (
-                    <span className={styles.faceWrap} aria-hidden="true">
-                      <HeroFace hero={hero} />
+                return (
+                  <div
+                    key={i}
+                    className={[
+                      styles.cell,
+                      isHead || isBody ? styles.body : "",
+                      isHead || isBody ? BODY_CLASS[hero] : "",
+                      isHead ? styles.head : "",
+                      isFood ? styles.food : "",
+                    ]
+                      .filter(Boolean)
+                      .join(" ")}
+                    style={
+                      isBody || isHead
+                        ? ({ ["--trail-fade"]: fade } as CSSProperties)
+                        : undefined
+                    }
+                  >
+                    {isHead && (
+                      <span className={styles.faceWrap} aria-hidden="true">
+                        <HeroFace hero={hero} />
+                        <span
+                          className={`${styles.dirPip} ${reduced ? styles.dirPipReduced : ""}`}
+                          style={{ ["--face-rot" as string]: DIR_ROT[headDir] }}
+                        />
+                      </span>
+                    )}
+                    {isFood && (
                       <span
-                        className={`${styles.dirPip} ${reduced ? styles.dirPipReduced : ""}`}
-                        style={{ ["--face-rot" as string]: DIR_ROT[headDir] }}
+                        className={`${styles.crumb} ${reduced ? styles.crumbReduced : ""}`}
+                        aria-hidden="true"
                       />
-                    </span>
-                  )}
-                  {isFood && (
-                    <span
-                      className={`${styles.crumb} ${reduced ? styles.crumbReduced : ""}`}
-                      aria-hidden="true"
-                    />
-                  )}
-                </div>
-              );
-            })}
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className={styles.pad} role="group" aria-label={copy.pad}>
+            {(
+              [
+                ["up", styles.padUp, "▲", copy.up],
+                ["left", styles.padLeft, "◀", copy.left],
+                ["right", styles.padRight, "▶", copy.right],
+                ["down", styles.padDown, "▼", copy.down],
+              ] as const
+            ).map(([dir, className, glyph, label]) => (
+              <button
+                key={dir}
+                type="button"
+                className={`${styles.padBtn} ${className}`}
+                aria-label={label}
+                disabled={phase !== "playing"}
+                onPointerDown={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  steer(dir);
+                }}
+              >
+                <span aria-hidden="true">{glyph}</span>
+              </button>
+            ))}
           </div>
         </div>
 
@@ -548,7 +635,7 @@ export default function TrailTail() {
               <>
                 <p className={shared.overlayTitle}>{dict.ready}</p>
                 <p className={shared.overlayMeta}>
-                  {dict.hero}: {dict[hero]}
+                  {dict[hero]} · {dict[difficulty]}
                 </p>
                 <button type="button" className={shared.playBtn} onClick={startGame}>
                   {dict.play}
@@ -573,7 +660,7 @@ export default function TrailTail() {
                   {dict.score}: {score}
                 </p>
                 <p className={shared.overlayMeta}>
-                  {dict.best} ({dict[hero]}): {best}
+                  {dict.best} ({dict[difficulty]}): {best}
                 </p>
                 <button type="button" className={shared.playBtn} onClick={startGame}>
                   {dict.again}
