@@ -24,6 +24,10 @@
 .DS_Store
 *.pem
 
+# local-only archives (never committed)
+/archive
+/lab-backlog
+
 # debug
 npm-debug.log*
 yarn-debug.log*

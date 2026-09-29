@@ -1,10 +1,10 @@
 # KeksOwl — Semyon Ulankov
 
-> Frontend Engineer focused on interactive UI, product thinking and engineering quality.
+> Software Engineer focused on interactive UI, product thinking and engineering quality.
 
 ## About
 
-I'm Semyon Ulankov, a frontend engineer who treats UI as a system, not a set of screens. I think about how components scale, how state flows, how an interface holds up when the network drops or a screen reader takes over. The kind of work where engineering decisions shape what the user feels — even if they never notice.
+I'm Semyon Ulankov, a software engineer who treats UI as a system, not a set of screens. I think about how components scale, how state flows, how an interface holds up when the network drops or a screen reader takes over. The kind of work where engineering decisions shape what the user feels — even if they never notice.
 
 I work well in teams that blur the line between design and engineering — where both sides care about the result, not just the handoff. Whether it's two people or twenty, what matters to me is honest code review, async-first communication, and enough documentation that decisions don't get lost between sprints.
 
@@ -19,11 +19,11 @@ Outside of work I run tabletop RPG campaigns, build FoundryVTT modules, and tran
 
 ## Current Work
 
-Working with TypeScript, React and modern frontend tooling on complex interactive surfaces at Songsterr.
+Working in TypeScript on the core of a complex interactive editor at Songsterr — domain logic, rendering, Web Worker architecture.
 
 ## CV
 
-Full CV at https://keksowl.com/cv — Frontend Engineer at Songsterr (Mar 2025 — present): complex product UI (drum notation, AI panel redesigns), shared component architecture (floating UI refactor), A/B experiments, and senior-level i18n infrastructure — a typed gettext/.po workflow for ten-plus languages and a locale-import static analyzer wired into the CI of multiple services. Also the sole full-stack developer of topnevesta.com (Next.js + TypeScript) and smart-stat.ru (WordPress/WooCommerce) since 2022.
+Full CV at https://keksowl.com/cv — Software Engineer at Songsterr (Mar 2025 — present), working on the core of the product's interactive editor: a feature shipped end-to-end across three repositories with a deliberate backward-compatibility design, a reusable core for a family of editor commands under real domain constraints, an interaction layer over an SVG-rendered document (clickable symbols with component tests, command-scope preview), a read-only command preview computed in a Web Worker (in review), A/B experiments run end-to-end, plus the i18n platform — a typed gettext/.po workflow for ten languages with a static analyzer and translation-quality tests in the CI of three services. Also the sole full-stack developer of topnevesta.com (Next.js + TypeScript) and smart-stat.ru (WordPress/WooCommerce) since 2022.
 
 ## Tech Stack
 

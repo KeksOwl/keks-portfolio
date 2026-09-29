@@ -15,11 +15,11 @@ const ibmPlexSans = IBM_Plex_Sans({
 
 export const metadata: Metadata = {
   title: "KeksOwl — Semyon Ulankov",
-  description: "Frontend Engineer focused on interactive UI, product thinking and engineering quality.",
+  description: "Software Engineer focused on interactive UI, product thinking and engineering quality.",
   metadataBase: new URL("https://keksowl.com"),
   openGraph: {
     title: "KeksOwl — Semyon Ulankov",
-    description: "Frontend Engineer focused on interactive UI, product thinking and engineering quality.",
+    description: "Software Engineer focused on interactive UI, product thinking and engineering quality.",
     url: "https://keksowl.com",
     siteName: "KeksOwl",
     locale: "en_US",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "KeksOwl — Semyon Ulankov",
-    description: "Frontend Engineer focused on interactive UI, product thinking and engineering quality.",
+    description: "Software Engineer focused on interactive UI, product thinking and engineering quality.",
     images: ["/og-image.png"],
   },
 };

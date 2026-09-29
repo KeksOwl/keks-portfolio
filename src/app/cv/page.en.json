@@ -1,7 +1,7 @@
 {
   "header": {
     "name": "Semyon Ulankov",
-    "headline": "Frontend Engineer — product UI, i18n infrastructure, developer tooling",
+    "headline": "Software Engineer — interactive product UI, frontend architecture, i18n infrastructure",
     "meta": "Remote",
     "available": "Open to a lot of things!",
     "notAvailable": "Not looking for work at the moment.",
@@ -9,7 +9,7 @@
   },
   "summary": {
     "title": "Summary",
-    "text": "Frontend engineer who cares about polished, thoughtful UI — the details, the CSS, the edge cases — and about the engineering underneath it: shared component architecture, refactoring, tooling and tests. Deep specialization in i18n infrastructure as an engineering problem rather than translation: typed pipelines, static analysis in CI, grammar-aware localization. Used to working as a self-directed engineer in an async product team — taking things from a fuzzy idea to production and steady state."
+    "text": "Software engineer who cares about polished, thoughtful UI — the details, the edge cases, how an interface behaves in a real user's hands — and about the engineering underneath it: reusable cores instead of copy-paste, architecture that keeps the UI responsive, backward compatibility as a deliberate decision, tests in every significant change. Currently working in the core of a complex interactive editor used by millions. Also built the i18n infrastructure for ten languages and treat it as an engineering problem rather than translation: typed pipelines and CI gates. Used to working as a self-directed engineer in an async product team — taking things from a fuzzy idea to production and steady state."
   },
   "experience": {
     "title": "Experience",
@@ -19,20 +19,20 @@
         "id": "songsterr",
         "company": "Songsterr",
         "url": "https://www.songsterr.com",
-        "role": "Frontend Engineer",
+        "role": "Software Engineer",
         "period": "2025 — Present",
         "location": "Remote",
-        "description": "Popular guitar tablature service with a multi-million user audience. Product frontend across the whole surface — interactive UI, component architecture, experiments, tooling — plus deep ownership of the i18n platform, in an async remote team.",
+        "description": "Popular guitar tablature service with a multi-million user audience. I work on the core of the product's interactive editor — features that touch domain rules, the data model and rendering, not just screens — plus product experiments and the frontend i18n platform, in an async remote team.",
         "bullets": [
-          "Refactored the app's floating UI into a single useFloatingDropdown hook, replacing per-component portal boilerplate across selects, tuning editors and settings panels.",
-          "Redesigned complex product UI: drum notation with responsive mobile layout and contextual help, the AI regeneration panel, refreshed toast notifications.",
-          "Own the frontend i18n platform: ten-plus languages across hundreds of components on a unified gettext/.po workflow with type-safe codegen and grammar-aware word order.",
-          "Designed and shipped a locale-import static analyzer with auto-fix, wired into the CI of multiple services — eliminating a class of \"silent English fallback\" bugs.",
-          "Led subsystem refactors: centralized notification localization across hundreds of files, moved locale resolution out of a Web Worker, split translations into lazy-loaded domains.",
-          "Ran product A/B experiments end-to-end — from experiment settings and UI to asset optimization (PNG → WebP → inline SVG) and analytics.",
-          "Delivered beyond the web app: Mocha test suites for domain logic, internal MCP server features (TypeScript service code with tests), iOS/Android user-testing support."
+          "Shipped a notation feature end-to-end across three repositories — file-import parsing in a separately versioned package, data model, editor UI, user docs and ten languages — with a deliberate backward-compatibility design so existing user content kept behaving exactly as before.",
+          "Designed a reusable core for a family of editor commands that move notes under real instrument constraints, and rebuilt three commands on top of it; the same logic drives both the command and the toolbar state, so controls are disabled exactly where the action would fail.",
+          "Built an interaction layer over an SVG-rendered document: clickable notation symbols that open the right editing tools (12 components, each with a component test), geometry-based mapping between symbols and data, and a hover preview showing what a toolbar command will affect.",
+          "Architected a read-only command preview computed in a Web Worker: runs against a throwaway copy of the document, renders through the production pipeline, defers expensive work so a user's click never waits behind a hover preview, and drops stale responses — in review.",
+          "Unified the app's floating UI — dropdowns, pickers, settings panels — behind a single shared hook, removing per-component boilerplate; redesigned complex notation UI with a responsive mobile layout and contextual help.",
+          "Built and maintain the i18n platform: ten languages across hundreds of components on a typed gettext/.po workflow with grammar-aware word order, plus a static analyzer with auto-fix and translation-quality tests wired into the CI of three services — turning a class of localization bugs from manual QA into automated gates.",
+          "Run product A/B experiments end-to-end — experiment design and exposure rules, UI, analytics attribution, e2e coverage and QA coordination — including source attribution for the subscription upgrade funnel."
         ],
-        "stack": "TypeScript · Preact · SSR · CSS Modules · Web Workers · gettext/.po · Mocha / Playwright"
+        "stack": "TypeScript · Preact · SSR · SVG · Web Workers · CSS Modules · gettext/.po · Mocha / Playwright (e2e, component tests)"
       },
       {
         "id": "topnevesta",
@@ -63,19 +63,23 @@
     "groups": [
       {
         "title": "Core",
-        "items": ["TypeScript (strict)", "React / Preact", "Node.js (services, MCP)", "SSR", "Semantic HTML, accessibility", "CSS Modules / SCSS / LESS", "Tailwind / Bootstrap", "Design systems, component libraries", "Web Workers (Comlink)"]
+        "items": ["TypeScript (strict)", "React / Preact", "Node.js (services, MCP)", "SSR", "Semantic HTML, accessibility", "CSS Modules / SCSS / LESS", "Tailwind / Bootstrap", "Design systems, component libraries", "Web Workers (Comlink)", "SVG rendering, hit-testing"]
+      },
+      {
+        "title": "Architecture & domain logic",
+        "items": ["Domain algorithms under real-world constraints", "Data model design, backward compatibility", "File-format parsing, versioned package releases", "Main-thread / worker architecture, deferred work, stale-response handling", "Interaction layers over SVG"]
       },
       {
         "title": "Internationalization",
-        "items": ["i18n/l10n at scale", "gettext / .po workflow", "Type-safe translation codegen", "Grammar-aware localization", "Music-domain localization"]
+        "items": ["i18n/l10n at scale", "gettext / .po workflow", "Type-safe translation codegen", "Grammar-aware localization", "Translation-quality CI gates"]
       },
       {
         "title": "Tooling & quality",
-        "items": ["Static analysis / auto-fix tooling", "CI standards enforcement", "Playwright / Mocha / Cypress", "Performance optimization (assets, bundle, rendering)", "LLM-assisted engineering: agent workflows, code verification"]
+        "items": ["Static analysis / auto-fix tooling", "CI standards enforcement", "Playwright (e2e, component tests) / Mocha / Cypress", "Performance optimization (rendering, bundle, assets)", "Bundle diagnostics (code-splitting)", "LLM-assisted engineering: agent workflows, code verification, team skills"]
       },
       {
         "title": "Product engineering",
-        "items": ["A/B experiments", "Mixpanel / Sentry", "MCP servers"]
+        "items": ["A/B experiments: exposure models, cleanup", "Product analytics: Mixpanel, funnel attribution", "Sentry", "MCP servers"]
       }
     ]
   },
