@@ -15,6 +15,7 @@ const viewBySlug: Record<ExperimentSlug, React.ComponentType> = {
   hoot: dynamic(() => import("../experiments/hoot"), { ssr: false }),
   crumb: dynamic(() => import("../experiments/crumb"), { ssr: false }),
   trail: dynamic(() => import("../experiments/trail"), { ssr: false }),
+  tower: dynamic(() => import("../experiments/tower"), { ssr: false }),
 };
 
 interface ExperimentViewProps {

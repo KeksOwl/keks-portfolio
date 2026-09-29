@@ -1,0 +1,228 @@
+.stage {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  cursor: pointer;
+  touch-action: none;
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Camera: the world slides down as the tower grows. */
+.world {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  transition: transform 220ms cubic-bezier(0.22, 0.8, 0.28, 1);
+  will-change: transform;
+}
+
+.worldReduced {
+  transition: none;
+}
+
+.ground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, rgba(225, 172, 110, 0.3) 20%, rgba(225, 172, 110, 0.3) 80%, transparent 100%);
+}
+
+/* A cupcake seen from the side: frosting on top, ridged liner below. */
+.block {
+  position: absolute;
+  box-sizing: border-box;
+  border-radius: 7px 7px 4px 4px;
+  overflow: visible;
+  background:
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.14) 0 3px, transparent 3px 9px),
+    linear-gradient(180deg, var(--liner-hi) 0%, var(--liner-lo) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 2px 6px rgba(0, 0, 0, 0.35);
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 44%;
+    border-radius: 7px 7px 45% 45% / 7px 7px 60% 60%;
+    background: linear-gradient(180deg, var(--frost-hi) 0%, var(--frost-lo) 100%);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.18);
+  }
+}
+
+.blockA {
+  --frost-hi: #ffc8d8;
+  --frost-lo: #ff9fbd;
+  --liner-hi: #d9a06e;
+  --liner-lo: #a8744a;
+}
+
+.blockB {
+  --frost-hi: #f4d6a8;
+  --frost-lo: #e1ac6e;
+  --liner-hi: #c98f5f;
+  --liner-lo: #955f3b;
+}
+
+.blockC {
+  --frost-hi: #ece3d4;
+  --frost-lo: #cfc2b0;
+  --liner-hi: #b98a5e;
+  --liner-lo: #8a5a3a;
+}
+
+.base {
+  border-radius: 6px 6px 3px 3px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 0 18px rgba(225, 172, 110, 0.12);
+}
+
+.moving {
+  z-index: 3;
+  will-change: left;
+}
+
+.blockPerfect {
+  animation: perfectFlash 420ms ease-out;
+}
+
+@keyframes perfectFlash {
+  0% {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 0 0 0 rgba(225, 172, 110, 0.8),
+      0 0 18px rgba(225, 172, 110, 0.45);
+    filter: brightness(1.35);
+  }
+
+  100% {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 0 0 10px rgba(225, 172, 110, 0),
+      0 2px 6px rgba(0, 0, 0, 0.35);
+    filter: brightness(1);
+  }
+}
+
+/* Hero perched on the block being delivered. */
+.rider {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% - 3px);
+  width: 34px;
+  height: 34px;
+  transform: translateX(-50%);
+  pointer-events: none;
+
+  @media (max-width: $vp-mobile) {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+.riderSvg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.3));
+}
+
+/* Overhang that got trimmed, or the whole block on a miss. */
+.piece {
+  z-index: 2;
+  pointer-events: none;
+  transform-origin: 50% 50%;
+  animation: pieceFall 720ms cubic-bezier(0.4, 0, 0.9, 0.6) forwards;
+}
+
+.pieceLeft {
+  --spin: -34deg;
+  --drift: -18px;
+}
+
+.pieceRight {
+  --spin: 34deg;
+  --drift: 18px;
+}
+
+.pieceWhole {
+  --spin: 12deg;
+  --drift: 0px;
+}
+
+.pieceReduced {
+  animation: pieceFade 160ms ease-out forwards;
+}
+
+@keyframes pieceFall {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(var(--drift, 0px), 300px) rotate(var(--spin, 0deg));
+    opacity: 0;
+  }
+}
+
+@keyframes pieceFade {
+  to {
+    opacity: 0;
+  }
+}
+
+.pop {
+  position: absolute;
+  z-index: 4;
+  transform: translateX(-50%);
+  font-size: 13px;
+  letter-spacing: $text-spacing-5;
+  text-transform: uppercase;
+  color: $color-accent;
+  white-space: nowrap;
+  pointer-events: none;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  animation: popRise 760ms ease-out forwards;
+
+  @media (max-width: $vp-550) {
+    font-size: 12px;
+  }
+}
+
+.popReduced {
+  animation: pieceFade 160ms ease-out forwards;
+}
+
+@keyframes popRise {
+  0% {
+    transform: translate(-50%, 6px);
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-50%, -28px);
+    opacity: 0;
+  }
+}
+
+.toolbarEnd {
+  margin-left: auto;
+}

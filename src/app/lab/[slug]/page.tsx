@@ -12,6 +12,7 @@ const titles: Record<ExperimentSlug, string> = {
   hoot: "Hoot Stack",
   crumb: "Crumb Match",
   trail: "Trail Tail",
+  tower: "Cupcake Tower",
 };
 
 export async function generateStaticParams() {

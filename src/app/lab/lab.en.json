@@ -53,6 +53,14 @@
       "down": "Down",
       "left": "Left",
       "right": "Right"
+    },
+    "tower": {
+      "title": "Cupcake Tower",
+      "blurb": "Time the tap. Stack cupcake on cupcake. Don't miss.",
+      "hint": "Tap, click, or press Space to drop the cupcake onto the tower. Any overhang is cut off, so the tower gets narrower. A perfect landing starts a combo, and three in a row win back some width. Best score is saved per difficulty.",
+      "height": "Height",
+      "perfect": "Perfect!",
+      "dropKey": "Space — drop"
     }
   }
 }
